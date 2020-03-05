@@ -79,6 +79,7 @@ public class AuthenticatorTest {
 	
 	@Test
 	public void testIsExistsTelephoneNumber() throws Exception {
+		// create a new entry
 		String insertQuery = "INSERT INTO users(tel,pass) VALUES('09397534791','adadbxoro12')";
 		MysqlConnector.set(insertQuery);
 		
@@ -91,7 +92,7 @@ public class AuthenticatorTest {
 		if(!isExistsTel1) {
 			throw new Exception("inserted phone nubmer doesn't exists!");
 		}
-		
+		// delte new instance
 		String deleteQuery = "DELETE FROM users WHERE tel like '09397534791'and pass like 'adadbxoro12'";
 		MysqlConnector.set(deleteQuery);
 		
@@ -104,6 +105,7 @@ public class AuthenticatorTest {
 
 	@Test
 	public void testIsExistsTelephoneNumberAndPassword() throws Exception {
+		// insert new entry
 		String insertQuery = "INSERT INTO users(tel,pass) VALUES('09397534791','adadbxoro12')";
 		MysqlConnector.set(insertQuery);
 		
@@ -116,18 +118,30 @@ public class AuthenticatorTest {
 		if(result1 == null) {
 			throw new Exception("inserted phone nubmer doesn't exists!");
 		}
+		// update new entry (pass)
+		String updateQuery1 = "UPDATE users SET pass='adadbxoro1' WHERE tel like '09397534791'and pass like 'adadbxoro12'";
+		MysqlConnector.set(updateQuery1);
 		
-		String updateQuery = "UPDATE users SET pass='adadbxoro1' WHERE tel like '09397534791'and pass like 'adadbxoro12'";
-		MysqlConnector.set(updateQuery);
-		
+		// don't update password from user we want use our previous datas
 		Object result2 = Authenticator.isExistsTelephoneNumerAndPassword(user);
 		
 		if(result2 != null) {
-			throw new Exception("deleted phone nubmer exists!");
+			throw new Exception("updated password exists!");
+		}
+		// update new entry (nubmer)
+		String updateQuery2 = "UPDATE users SET tel='1111' WHERE tel like '09397534791'and pass like 'adadbxoro1'";
+		MysqlConnector.set(updateQuery2);
+		
+		// don't update tel from user we want use our previous datas but set passwrod to ensure
+		user.setPassword("adadbxoro1");
+		Object result3 = Authenticator.isExistsTelephoneNumerAndPassword(user);
+		
+		if(result3 != null) {
+			throw new Exception("updated number exists!");
 		}
 		
 		// clean inserted datas
-		String deleteQuery = "DELETE FROM users WHERE tel like '09397534791'and pass like 'adadbxoro12'";
+		String deleteQuery = "DELETE FROM users WHERE tel like '1111' and pass like 'adadbxoro1'";
 		MysqlConnector.set(deleteQuery);
 	}
 	
