@@ -2,6 +2,8 @@ package general.authentication;
 
 import org.junit.jupiter.api.Test;
 
+import general.database.mysql.MysqlConnector;
+
 public class AuthenticatorTest {
 
 	@Test
@@ -74,5 +76,59 @@ public class AuthenticatorTest {
 			throw new Exception(errorMessage);
 		}
 	}
+	
+	@Test
+	public void testIsExistsTelephoneNumber() throws Exception {
+		String insertQuery = "INSERT INTO users(tel,pass) VALUES('09397534791','adadbxoro12')";
+		MysqlConnector.set(insertQuery);
+		
+		User user = new User();
+		user.setPassword("adadbxoro12");
+		user.setTelephone("09397534791");
+		
+		boolean isExistsTel1 = Authenticator.isExistsTelephoneNumber(user);
+		
+		if(!isExistsTel1) {
+			throw new Exception("inserted phone nubmer doesn't exists!");
+		}
+		
+		String deleteQuery = "DELETE FROM users WHERE tel like '09397534791'and pass like 'adadbxoro12'";
+		MysqlConnector.set(deleteQuery);
+		
+		boolean isExistsTel2 = Authenticator.isExistsTelephoneNumber(user);
+		
+		if(isExistsTel2) {
+			throw new Exception("deleted phone nubmer exists!");
+		}
+	}
 
+	@Test
+	public void testIsExistsTelephoneNumberAndPassword() throws Exception {
+		String insertQuery = "INSERT INTO users(tel,pass) VALUES('09397534791','adadbxoro12')";
+		MysqlConnector.set(insertQuery);
+		
+		User user = new User();
+		user.setPassword("adadbxoro12");
+		user.setTelephone("09397534791");
+		
+		Object result1 = Authenticator.isExistsTelephoneNumerAndPassword(user);
+		
+		if(result1 == null) {
+			throw new Exception("inserted phone nubmer doesn't exists!");
+		}
+		
+		String updateQuery = "UPDATE users SET pass='adadbxoro1' WHERE tel like '09397534791'and pass like 'adadbxoro12'";
+		MysqlConnector.set(updateQuery);
+		
+		Object result2 = Authenticator.isExistsTelephoneNumerAndPassword(user);
+		
+		if(result2 != null) {
+			throw new Exception("deleted phone nubmer exists!");
+		}
+		
+		// clean inserted datas
+		String deleteQuery = "DELETE FROM users WHERE tel like '09397534791'and pass like 'adadbxoro12'";
+		MysqlConnector.set(deleteQuery);
+	}
+	
 }

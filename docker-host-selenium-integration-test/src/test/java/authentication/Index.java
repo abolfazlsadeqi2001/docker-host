@@ -68,7 +68,7 @@ public class Index extends SeleniumTestParent {
 		fillInput(password, "12341234", errorInformMessage, "pattern allowed only numberic password", submit);
 		fillInput(password, "mamad1", errorInformMessage, "pattern allowed small length", submit);
 		fillInput(password, "mamadmamad", errorInformMessage, "pattern allowed only numberic password", submit);
-		fillInput(password, "mamadzoro12", "you have not to see any password error", "pattern allowed only numberic password", submit);
+		fillInput(password, "adadbxoro12", "you have not to see any password error", "pattern allowed only numberic password", submit);
 	}
 	
 	// register form and its content tests
@@ -118,6 +118,6 @@ public class Index extends SeleniumTestParent {
 		fillInput(password, "12341234", errorInformMessage, "pattern allowed only numberic password", submit);
 		fillInput(password, "mamad1", errorInformMessage, "pattern allowed small length", submit);
 		fillInput(password, "mamadmamad", errorInformMessage, "pattern allowed only numberic password", submit);
-		fillInput(password, "mamadzoro12", "you have not to see any password error", "pattern allowed only numberic password", submit);
+		fillInput(password, "adadbxoro1212", "you have not to see any password error", "pattern allowed only numberic password", submit);
 	}
 }

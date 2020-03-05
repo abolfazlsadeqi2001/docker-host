@@ -1,6 +1,9 @@
 package general.authentication;
 
+import java.sql.ResultSet;
 import java.util.regex.Pattern;
+
+import general.database.mysql.MysqlConnector;
 
 /**
  * this class placed into general package because it will use in both controller and filter sections<br>
@@ -23,6 +26,7 @@ import java.util.regex.Pattern;
  * {@link main.controllers.authentication.AuthenticationController}
  */
 public class Authenticator {
+	// TODO add cachable memory
 	// validating password section
 	private static final int PASSWORD_MIN_LENGTH = 8;
 	private static final int PASSWORD_MAX_LENGTH = 12;
@@ -56,9 +60,9 @@ public class Authenticator {
 	/**
 	 * validate the telephone number by our criteria (pattern)
 	 * if it invalid throw an exception
-	 * @param telephone
-	 * @return
-	 * @throws Exception
+	 * @param telephone telephone to validate
+	 * @return return validated telephone
+	 * @throws Exception exception when connect and execute the query
 	 */
 	public static String validateTelephone(String telephone) throws Exception {
 		telephone = telephone.trim();
@@ -69,5 +73,48 @@ public class Authenticator {
 		}
 		
 		return telephone;
+	}
+	
+	/**
+	 * return existance of telephone nubmer in database
+	 * @param user User object which contain the telephone number
+	 * @return return true when in database we have a telephone number like param
+	 * @throws Exception exception when connect and execute the query
+	 */
+	public static boolean isExistsTelephoneNumber (User user) throws Exception {
+		String queryTemplate = "SELECT * FROM users WHERE tel like '%s'";
+		String query = String.format(queryTemplate, user.getTelephone());
+		ResultSet set = MysqlConnector.get(query);
+		
+		while(set.next()) {
+			String telephone = set.getString("tel");
+			if(telephone.equals(user.getTelephone()))
+				return true;
+		}
+		// if in set doesn't any phone match return false
+		return false;
+	}
+	
+	/**
+	 * return existance of telephone nubmer that have a same password in database
+	 * @param user User object which contain the telephone number and password
+	 * @return if have a row that include the same number and same password return that row by resultset otherwise return null
+	 * @throws Exception exception when connect and execute the query 
+	 */
+	public static ResultSet isExistsTelephoneNumerAndPassword (User user) throws Exception {
+		String queryTemplate = "SELECT * FROM users WHERE tel like '%s' and pass like '%s'";
+		String query = String.format(queryTemplate, user.getTelephone(),user.getPassword());
+		ResultSet set = MysqlConnector.get(query);
+		
+		while(set.next()) {
+			String telephone = set.getString("tel");
+			String password = set.getString("pass");
+			
+			if(telephone.equals(user.getTelephone()))
+				if(password.equals(user.getPassword()))
+					return set;
+		}
+		// if in set doesn't any phone and password match return null
+		return null;
 	}
 }
