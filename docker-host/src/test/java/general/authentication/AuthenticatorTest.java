@@ -1,5 +1,7 @@
 package general.authentication;
 
+import java.sql.ResultSet;
+
 import org.junit.jupiter.api.Test;
 
 import general.database.mysql.MysqlConnector;
@@ -14,7 +16,8 @@ public class AuthenticatorTest {
 				new InvalidPassword("1434123412", "allowed only numberic"),
 				new InvalidPassword("ababdxogdas", "allowed only ahphabetical"),
 				new InvalidPassword("ababd12", "allowed short length password"),
-				new InvalidPassword("abaabd1234456", "allowed large length password")
+				new InvalidPassword("abaabd1234456", "allowed large length password"),
+				new InvalidPassword("nothing", "allowed the default value of controller")
 		};
 		
 		for (InvalidPassword invalidPassword : invalids) {
@@ -51,7 +54,8 @@ public class AuthenticatorTest {
 			new InvalidPhone("0930039295", "validated a short phone number"),
 			new InvalidPhone("093003925687", "validated a long phone number"),
 			new InvalidPhone("19397536145", "validated a phone number start with 1"),
-			new InvalidPhone("02397543487","validated a phone nubmer start wit 02")
+			new InvalidPhone("02397543487","validated a phone nubmer start wit 02"),
+			new InvalidPhone("nothing", "allowed the default value of controller")
 		};
 		
 		for (InvalidPhone invalidPhone : invalidPhones) {
@@ -113,7 +117,7 @@ public class AuthenticatorTest {
 		user.setPassword("adadbxoro12");
 		user.setTelephone("09397534791");
 		
-		Object result1 = Authenticator.isExistsTelephoneNumerAndPassword(user);
+		Object result1 = Authenticator.getByTelephoneAndPassword(user);
 		
 		if(result1 == null) {
 			throw new Exception("inserted phone nubmer doesn't exists!");
@@ -123,7 +127,7 @@ public class AuthenticatorTest {
 		MysqlConnector.set(updateQuery1);
 		
 		// don't update password from user we want use our previous datas
-		Object result2 = Authenticator.isExistsTelephoneNumerAndPassword(user);
+		Object result2 = Authenticator.getByTelephoneAndPassword(user);
 		
 		if(result2 != null) {
 			throw new Exception("updated password exists!");
@@ -134,7 +138,7 @@ public class AuthenticatorTest {
 		
 		// don't update tel from user we want use our previous datas but set passwrod to ensure
 		user.setPassword("adadbxoro1");
-		Object result3 = Authenticator.isExistsTelephoneNumerAndPassword(user);
+		Object result3 = Authenticator.getByTelephoneAndPassword(user);
 		
 		if(result3 != null) {
 			throw new Exception("updated number exists!");
@@ -142,6 +146,25 @@ public class AuthenticatorTest {
 		
 		// clean inserted datas
 		String deleteQuery = "DELETE FROM users WHERE tel like '1111' and pass like 'adadbxoro1'";
+		MysqlConnector.set(deleteQuery);
+	}
+	
+	@Test
+	public void testInsertNewUser() throws Exception {
+		// make an user then insert it to database
+		User user = new User();
+		user.setTelephone("09397534791");
+		user.setPassword("ababdxoro12");
+		
+		Authenticator.insertNewUser(user);
+		// get added user from database
+		String query = "SELECT * FROM users WHERE tel like '09397534791' and pass like 'ababdxoro12'";
+		ResultSet set = MysqlConnector.get(query);
+		if(!set.next()) {
+			throw new Exception("the user wasn't added");
+		}
+		// remove added user
+		String deleteQuery = "DELETE FROM users WHERE tel like '09397534791' and pass like 'ababdxoro12'";
 		MysqlConnector.set(deleteQuery);
 	}
 	
