@@ -37,4 +37,28 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public boolean equalsByTelephoneAndPassword(User user) {
+		if(!user.getPassword().equals(getPassword()))
+			return false;
+		if(!user.getTelephone().equals(getTelephone()))
+			return false;
+		
+		return true;
+	}
+	
+	/**
+	 * any fields is added must be added here
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof User))
+			return false;
+		
+		User user = (User) obj;
+		if(user.getId() != getId())
+			return false;
+
+		return equalsByTelephoneAndPassword(user);
+	}
 }
