@@ -1,4 +1,4 @@
-package general.authentication;
+package main.general.authentication;
 
 public class User {
 	private String telephone;

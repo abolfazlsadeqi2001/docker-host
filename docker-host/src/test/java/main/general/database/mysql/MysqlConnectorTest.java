@@ -1,8 +1,10 @@
-package general.database.mysql;
+package main.general.database.mysql;
 
 import java.sql.ResultSet;
 
 import org.junit.jupiter.api.Test;
+
+import main.general.database.mysql.MysqlConnector;
 
 public class MysqlConnectorTest {
 	@Test

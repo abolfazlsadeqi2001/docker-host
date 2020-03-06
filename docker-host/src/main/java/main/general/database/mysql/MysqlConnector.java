@@ -1,4 +1,4 @@
-package general.database.mysql;
+package main.general.database.mysql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,7 +25,7 @@ public class MysqlConnector {
 	}
 	
 	/**
-	 * like the above method {@link general.database.mysql.MysqlConnector#set(String)} but just is used for select query
+	 * like the above method {@link main.general.database.mysql.MysqlConnector#set(String)} but just is used for select query
 	 * @param query query to execute (just select query)
 	 * @return return a result set of database response
 	 * @throws Exception throw any exception on execute query or connecting to database

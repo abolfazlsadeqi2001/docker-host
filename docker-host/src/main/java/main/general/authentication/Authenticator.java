@@ -1,9 +1,9 @@
-package general.authentication;
+package main.general.authentication;
 
 import java.sql.ResultSet;
 import java.util.regex.Pattern;
 
-import general.database.mysql.MysqlConnector;
+import main.general.database.mysql.MysqlConnector;
 
 /**
  * this class placed into general package because it will use in both controller

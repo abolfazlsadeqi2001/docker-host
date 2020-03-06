@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import general.authentication.Authenticator;
-import general.authentication.User;
+import main.general.authentication.Authenticator;
+import main.general.authentication.User;
 
 /**
  * this class handle the login and register requests (just inputs from
