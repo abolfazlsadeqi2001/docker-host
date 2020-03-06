@@ -2,6 +2,7 @@ package main.general.authentication;
 
 import java.sql.ResultSet;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,22 @@ public class AuthenticatorTest {
 	 */
 	@BeforeEach
 	public void before() {
-
+		try {
+			for (String currentPhone : TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES) {
+				String deleteQueryTemplate = "DELETE FROM users WHERE tel like %s";
+				String deleteQuery = String.format(deleteQueryTemplate, currentPhone);
+				MysqlConnector.set(deleteQuery);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * delete all recorded datas from database
+	 */
+	@AfterEach
+	public void after() {
 		try {
 			for (String currentPhone : TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES) {
 				String deleteQueryTemplate = "DELETE FROM users WHERE tel like %s";

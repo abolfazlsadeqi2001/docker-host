@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import main.general.authentication.Authenticator;
+import main.general.authentication.AuthenticatorFront;
 import main.general.authentication.User;
 
 /**
@@ -28,7 +28,7 @@ public class AuthenticationController {
 		User user = new User();
 		model.addAttribute(user);
 		try {
-			Authenticator.login(tel, password);
+			AuthenticatorFront.login(tel, password);
 		} catch (Exception e) {
 			user.setExceptionMessage(e.getMessage());
 			return "/authentication";
@@ -44,7 +44,7 @@ public class AuthenticationController {
 		User user = new User();
 		model.addAttribute(user);
 		try {
-			Authenticator.register(tel, password);
+			AuthenticatorFront.register(tel, password);
 		} catch (Exception e) {
 			user.setExceptionMessage(e.getMessage());
 			return "/authentication";
