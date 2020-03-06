@@ -51,12 +51,12 @@ public class Authenticator {
 		// set user fields to validate from cache or database
 		user.setPassword(validatePassword(password));
 		user.setTelephone(validateTelephone(telephone));
-		// get whole user datas using result set
-		// the set value must used in future when we have other fields but until we just
-		// have pass and tel we don't need to use set
-		// TODO the following method return a result set which placed on destination row (don't use next method) and until we have only tel and pass you haven't use it but if we have more than we have to get the return use its data to complete our user fields
-		getByTelephoneAndPassword(user);
+		// get whole user datas using result set from database
+		ResultSet set = getByTelephoneAndPassword(user);
+		
+		user.setId(set.getInt("id"));
 
+		set.close();
 		return user;
 	}
 	
@@ -78,7 +78,11 @@ public class Authenticator {
 		}
 		// insert to database
 		insertNewUser(user);
+		// get user datas on database (just id)
+		ResultSet set = getByTelephoneAndPassword(user);
+		user.setId(set.getInt("id"));
 		// return user
+		set.close();
 		return user;
 	}
 
@@ -173,8 +177,8 @@ public class Authenticator {
 				if (password.equals(user.getPassword()))
 					return set;
 		}
-		// if in set doesn't any phone and password match return null
-		return null;
+		
+		throw new Exception("unknown user in database");
 	}
 
 	/**

@@ -12,6 +12,8 @@
 	<meta http-equiv="content-type" content="text/html" />
 </head>
 <body>
+	<div class="error-container" th:text="${user.exceptionMessage}">
+	</div>
 	<!-- login form -->
 	<form name="login-form" method="POST" accept-charset="ASCII" autocomplete="off" action="/login">
 		<fieldset>

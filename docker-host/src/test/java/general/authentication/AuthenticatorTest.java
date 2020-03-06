@@ -108,7 +108,7 @@ public class AuthenticatorTest {
 	}
 
 	@Test
-	public void testIsExistsTelephoneNumberAndPassword() throws Exception {
+	public void testGetTelephoneNumberAndPassword() throws Exception {
 		// insert new entry
 		String insertQuery = "INSERT INTO users(tel,pass) VALUES('09397534791','adadbxoro12')";
 		MysqlConnector.set(insertQuery);
@@ -117,19 +117,25 @@ public class AuthenticatorTest {
 		user.setPassword("adadbxoro12");
 		user.setTelephone("09397534791");
 		
-		Object result1 = Authenticator.getByTelephoneAndPassword(user);
-		
-		if(result1 == null) {
+		try {
+			Authenticator.getByTelephoneAndPassword(user);
+		}catch(Exception e) {
 			throw new Exception("inserted phone nubmer doesn't exists!");
 		}
+		
 		// update new entry (pass)
 		String updateQuery1 = "UPDATE users SET pass='adadbxoro1' WHERE tel like '09397534791'and pass like 'adadbxoro12'";
 		MysqlConnector.set(updateQuery1);
 		
 		// don't update password from user we want use our previous datas
-		Object result2 = Authenticator.getByTelephoneAndPassword(user);
+		boolean isFail = false;
+		try {
+			Authenticator.getByTelephoneAndPassword(user);
+		}catch (Exception e) {
+			isFail = true;
+		}
 		
-		if(result2 != null) {
+		if(!isFail) {
 			throw new Exception("updated password exists!");
 		}
 		// update new entry (nubmer)
@@ -138,9 +144,14 @@ public class AuthenticatorTest {
 		
 		// don't update tel from user we want use our previous datas but set passwrod to ensure
 		user.setPassword("adadbxoro1");
-		Object result3 = Authenticator.getByTelephoneAndPassword(user);
+		isFail = false;
+		try {
+			Authenticator.getByTelephoneAndPassword(user);
+		} catch(Exception e) {
+			isFail = true;
+		}
 		
-		if(result3 != null) {
+		if(!isFail) {
 			throw new Exception("updated number exists!");
 		}
 		
