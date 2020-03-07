@@ -104,14 +104,12 @@ public class Authenticator {
 	 * @throws Exception exception when connect and execute the query
 	 */
 	static boolean isExistsTelephoneNumber(User user) throws Exception {
-		String queryTemplate = "SELECT * FROM users WHERE tel like '%s'";
+		String queryTemplate = "SELECT * FROM users WHERE tel='%s'";
 		String query = String.format(queryTemplate, user.getTelephone());
 		ResultSet set = MysqlConnector.get(query);
 
-		while (set.next()) {
-			String telephone = set.getString("tel");
-			if (telephone.equals(user.getTelephone()))
-				return true;
+		if(set.next()) {
+			return true;
 		}
 		// if in set doesn't any phone match return false
 		return false;
@@ -126,17 +124,12 @@ public class Authenticator {
 	 * @throws Exception exception when connect and execute the query
 	 */
 	static ResultSet getByTelephoneAndPassword(User user) throws Exception {
-		String queryTemplate = "SELECT * FROM users WHERE tel like '%s' and pass like '%s'";
+		String queryTemplate = "SELECT * FROM users WHERE tel='%s' and pass='%s'";
 		String query = String.format(queryTemplate, user.getTelephone(), user.getPassword());
 		ResultSet set = MysqlConnector.get(query);
 
-		while (set.next()) {
-			String telephone = set.getString("tel");
-			String password = set.getString("pass");
-
-			if (telephone.equals(user.getTelephone()))
-				if (password.equals(user.getPassword()))
-						return set;
+		if(set.next()) {// if we have at least 1 row
+			return set;// return and do not throw exception in following command
 		}
 		
 		throw new Exception("unknown user in database");
