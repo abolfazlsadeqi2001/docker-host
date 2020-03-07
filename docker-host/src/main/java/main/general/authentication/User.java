@@ -5,11 +5,10 @@ public class User {
 	private String password;
 	private int id;
 	private String exceptionMessage;
-
+	
 	public User() {
 		telephone = "";
 		password = "";
-		id = 0;
 		exceptionMessage = "";
 	}
 	
