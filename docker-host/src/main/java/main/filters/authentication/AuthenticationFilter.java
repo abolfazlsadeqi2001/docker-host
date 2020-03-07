@@ -52,24 +52,22 @@ public class AuthenticationFilter extends FilterParent implements Filter {
 		
 		
 		if(isInIncludation(path)) {
-			// get all cookies then fill the password cookie and telephone cookie but 'correct values' (default value ='nothing')
-			Cookie[] cookies = httpRequest.getCookies();
-			if(cookies == null) {// prevent NullPoinerException
-				cookies = new Cookie[] {new Cookie("a","b")};
-			}
-			Cookie passwordCookie = new Cookie("password","nothing");
-			Cookie telCookie = new Cookie("tel","nothing");
-			for (Cookie cookie : cookies) {
-				if(cookie.getName().equals("tel")) {
-					telCookie = new Cookie("tel",cookie.getValue());
-				}
-				
-				if(cookie.getName().equals("password")) {
-					passwordCookie = new Cookie("password",cookie.getValue());
-				}
-			}
-			// placed on authenticator front if it has any problem (Exception) mean our values wrong and must redirect to authentication page
 			try {
+				// get all cookies then fill the password cookie and telephone cookie but 'correct values' (default value ='nothing')
+				Cookie[] cookies = httpRequest.getCookies();
+				// I place the cookies in exception so that if we have null pointer exception for reading cookies it handle then go to authentication path
+				Cookie passwordCookie = new Cookie("password","nothing");
+				Cookie telCookie = new Cookie("tel","nothing");
+				for (Cookie cookie : cookies) {
+					if(cookie.getName().equals("tel")) {
+						telCookie = new Cookie("tel",cookie.getValue());
+					}
+					
+					if(cookie.getName().equals("password")) {
+						passwordCookie = new Cookie("password",cookie.getValue());
+					}
+				}
+				// placed on authenticator front if it has any problem (Exception) mean our values wrong and must redirect to authentication page
 				AuthenticatorFront.login(telCookie.getValue(), passwordCookie.getValue());
 			} catch (Exception e) {
 				httpResponse.sendRedirect("/authentication");
