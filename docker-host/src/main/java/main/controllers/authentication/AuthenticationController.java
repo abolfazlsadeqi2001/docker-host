@@ -11,16 +11,22 @@ import main.general.authentication.User;
 
 /**
  * this class handle the login and register requests (just inputs from
- * /authentication/index.html)<br>
- * <b>take care about authentication path (the static folder =>authentication/index.html for first time)<br>
- * but for validation and show error exception you have to write the templetes path(authentication)</b><br>
- * <b>each change in authentication/index.html must be applied in authentication of themplates
+ * /authentication)<br>
  * @author abolfazlsadeqi2001
- *
+ * If the default value for tel and password or their names on cookie change you have to change on the following classes
+ * @see
+ * {@link main.filters.authentication.AuthenticationFilter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)}
  */
 @Controller
 public class AuthenticationController {
 
+	@RequestMapping("/authentication")
+	public String authentication(Model model) {
+		User user = new User();
+		model.addAttribute(user);
+		return "/authentication";
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@RequestParam(defaultValue = "nothing", name = "tel") String tel,
 			@RequestParam(defaultValue = "nothing", name = "password") String password,

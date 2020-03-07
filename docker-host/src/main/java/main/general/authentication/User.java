@@ -6,6 +6,13 @@ public class User {
 	private int id;
 	private String exceptionMessage;
 
+	public User() {
+		telephone = "";
+		password = "";
+		id = 0;
+		exceptionMessage = "";
+	}
+	
 	public String getExceptionMessage() {
 		return exceptionMessage;
 	}
