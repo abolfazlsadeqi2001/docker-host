@@ -5,10 +5,12 @@ import java.util.regex.Pattern;
 public abstract class FilterParent {
 	
 	/** 
+	 * one of include and exclude must involve whole pathes (another one must check before if it doesn't then use this one(include whole paths))
 	 * @return return an array of all expression for exclude on affect filter on it
 	 */
 	protected abstract String[] excludationPathExpression();
 	/** 
+	 * one of include and exclude must involve whole pathes (another one must check before if it doesn't then use this one(include whole paths))
 	 * @return return an array of all expression for include on affect filter on it
 	 */
 	protected abstract String[] includationPathExpression();

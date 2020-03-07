@@ -90,7 +90,7 @@ public class Authenticator {
 		String pattern = "^09[0-9]{9}$";
 
 		if (!Pattern.matches(pattern, telephone)) {
-			throw new Exception();
+			throw new Exception("your telephone number doesn't meet the standars");
 		}
 
 		return telephone;

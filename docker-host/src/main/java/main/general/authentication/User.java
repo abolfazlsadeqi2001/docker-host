@@ -54,7 +54,7 @@ public class User {
 	}
 	
 	/**
-	 * any fields is added must be added here
+	 * any field is added must be added here
 	 */
 	@Override
 	public boolean equals(Object obj) {

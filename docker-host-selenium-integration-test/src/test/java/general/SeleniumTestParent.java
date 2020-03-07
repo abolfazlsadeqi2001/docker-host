@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
+ * <h1>the childeren must call {@link general.SeleniumTestParent#prepration(String)} in @BeforeClass by value="PATH_TO_HTML_FILE"</h1>
  * this class must be the parent of all selenium test cases<br>
  * <b>each children must define a version annotation in its class document which refer to 
  * the version of html file for test (defined in top if each html file like <!-- version 1.0.0 -->)
@@ -18,11 +19,11 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  * @author abolfazlsadeqi2001
  * if the website address changed you have to change the value of {@link general.SeleniumTestParent#PAGE_URL} in test resource
  */
-public class SeleniumTestParent {
+public abstract class SeleniumTestParent {
 	// webdriver defined in global to access by all @test methods
 	protected static WebDriver driver = null;
 	// the base url 
-	protected static final String PAGE_URL = "http://localhost:8080";
+	public static final String PAGE_URL = "http://localhost:8080";
 	// the time out which mean if loading page long greator than this number per second you have to implements some optimization
 	protected static final int TIME_OUT_TIME = 10;
 	// how much you have to wait for fill an input then show confirm dialog

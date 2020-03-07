@@ -14,7 +14,7 @@ import general.SeleniumTestParent;
  * {@link general.SeleniumTestParent}
  */
 public class Index extends SeleniumTestParent {
-	private static final String PATH_TO_HTML = "/authentication/index.html";
+	private static final String PATH_TO_HTML = "/authentication";
 	
 	// setup the address to test
 	@BeforeClass
