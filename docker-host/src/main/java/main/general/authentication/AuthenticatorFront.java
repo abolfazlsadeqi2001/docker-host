@@ -3,6 +3,14 @@ package main.general.authentication;
 import java.sql.ResultSet;
 
 public class AuthenticatorFront {
+	/**
+	 * to login a user using these fiedls<br>
+	 * any exception mean loin process failed
+	 * @param telephone
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
 	public static User login(String telephone, String password) throws Exception {
 		User user = new User();
 		// set user fields to validate from cache or database
@@ -18,7 +26,8 @@ public class AuthenticatorFront {
 	}
 	
 	/**
-	 * to register a user using these fiels
+	 * to register a user using these fiels<br>
+	 * any exception mean register process faild
 	 * @param telephone
 	 * @param password
 	 * @return return an user if the process of saving doesn't have any exception
