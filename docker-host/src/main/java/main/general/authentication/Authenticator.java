@@ -104,7 +104,7 @@ public class Authenticator {
 	 * @throws Exception exception when connect and execute the query
 	 */
 	static boolean isExistsTelephoneNumber(User user) throws Exception {
-		String queryTemplate = "SELECT * FROM users WHERE tel='%s'";
+		String queryTemplate = "SELECT * FROM users WHERE telephone='%s'";
 		String query = String.format(queryTemplate, user.getTelephone());
 		ResultSet set = MysqlConnector.get(query);
 
@@ -124,7 +124,7 @@ public class Authenticator {
 	 * @throws Exception exception when connect and execute the query
 	 */
 	static ResultSet getByTelephoneAndPassword(User user) throws Exception {
-		String queryTemplate = "SELECT * FROM users WHERE tel='%s' and pass='%s'";
+		String queryTemplate = "SELECT * FROM users WHERE telephone='%s' and password='%s'";
 		String query = String.format(queryTemplate, user.getTelephone(), user.getPassword());
 		ResultSet set = MysqlConnector.get(query);
 
@@ -142,7 +142,7 @@ public class Authenticator {
 	 * @throws Exception exception when connect and execute the query
 	 */
 	static void insertNewUser(User user) throws Exception {
-		String queryTemplate = "INSERT INTO users(tel,pass) VALUES('%s','%s')";
+		String queryTemplate = "INSERT INTO users(telephone,password) VALUES('%s','%s')";
 		String query = String.format(queryTemplate, user.getTelephone(), user.getPassword());
 		MysqlConnector.set(query);
 	}

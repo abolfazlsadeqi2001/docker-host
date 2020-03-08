@@ -29,7 +29,7 @@ public class Index extends SeleniumTestParent {
 	
 	@Test
 	public void testTelephoneLoginInput() {
-		driver.findElement(By.cssSelector("form[name='login-form'] input[type='text'][name='tel'][required='required'][pattern][title]:not([form])"));
+		driver.findElement(By.cssSelector("form[name='login-form'] input[type='text'][name='telephone'][required='required'][pattern][title]:not([form])"));
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class Index extends SeleniumTestParent {
 	
 	@Test
 	public void testTelephoneLoginInputPattern() throws Exception {
-		WebElement telephone = driver.findElement(By.cssSelector("form[name='login-form'] [name='tel']"));
+		WebElement telephone = driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']"));
 		WebElement submitElement = driver.findElement(By.cssSelector("form[name='login-form'] input[type='submit']"));
 		String errorInformMessage = "you have to see a telephone error";
 		
@@ -57,12 +57,12 @@ public class Index extends SeleniumTestParent {
 	
 	@Test
 	public void testEmailLoginInputPattern() throws Exception {
-		WebElement telephone = driver.findElement(By.cssSelector("form[name='login-form'] [name='tel']"));
+		WebElement telephone = driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']"));
 		WebElement password = driver.findElement(By.cssSelector("form[name='login-form'] [name='password']"));
 		WebElement submit = driver.findElement(By.cssSelector("form[name='login-form'] input[type='submit']"));
 		String errorInformMessage = "you have to see a password error";
 		
-		// fill the tel input by a validate nubmer which will help us to see the password errors
+		// fill the telephone input by a validate nubmer which will help us to see the password errors
 		fillInput(telephone, "09397534791");
 		
 		fillInput(password, "12341234", errorInformMessage, "pattern allowed only numberic password", submit);
@@ -79,7 +79,7 @@ public class Index extends SeleniumTestParent {
 	
 	@Test
 	public void testTelephoneRegisterInput() {
-		driver.findElement(By.cssSelector("form[name='register-form'] input[type='text'][name='tel'][required='required'][pattern][title]:not([form])"));
+		driver.findElement(By.cssSelector("form[name='register-form'] input[type='text'][name='telephone'][required='required'][pattern][title]:not([form])"));
 	}
 	
 	@Test
@@ -94,7 +94,7 @@ public class Index extends SeleniumTestParent {
 	
 	@Test
 	public void testTelephoneRegisterInputPattern() throws Exception {
-		WebElement telephone = driver.findElement(By.cssSelector("form[name='register-form'] [name='tel']"));
+		WebElement telephone = driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"));
 		WebElement submitElement = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
 		String errorInformMessage = "you have to see a telephone error";
 		
@@ -107,12 +107,12 @@ public class Index extends SeleniumTestParent {
 	
 	@Test
 	public void testEmailLoginRegisterPattern() throws Exception {
-		WebElement telephone = driver.findElement(By.cssSelector("form[name='register-form'] [name='tel']"));
+		WebElement telephone = driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"));
 		WebElement password = driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"));
 		WebElement submit = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
 		String errorInformMessage = "you have to see a password error";
 		
-		// fill the tel input by a validate nubmer which will help us to see the password errors
+		// fill the telephone input by a validate nubmer which will help us to see the password errors
 		fillInput(telephone, "09397534791");
 		
 		fillInput(password, "12341234", errorInformMessage, "pattern allowed only numberic password", submit);

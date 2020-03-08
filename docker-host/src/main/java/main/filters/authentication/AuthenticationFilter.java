@@ -62,10 +62,10 @@ public class AuthenticationFilter extends FilterParent implements Filter {
 				// I place the cookies in exception so that if we have null pointer exception
 				// for reading cookies it handle then go to authentication path
 				Cookie passwordCookie = new Cookie("password", "nothing");
-				Cookie telCookie = new Cookie("tel", "nothing");
+				Cookie telephoneCookie = new Cookie("telephone", "nothing");
 				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals("tel")) {
-						telCookie = new Cookie("tel", cookie.getValue());
+					if (cookie.getName().equals("telephone")) {
+						telephoneCookie = new Cookie("telephone", cookie.getValue());
 					}
 
 					if (cookie.getName().equals("password")) {
@@ -74,7 +74,7 @@ public class AuthenticationFilter extends FilterParent implements Filter {
 				}
 				// placed on authenticator front if it has any problem (Exception) mean our
 				// values wrong and must redirect to authentication page
-				AuthenticatorFront.login(telCookie.getValue(), passwordCookie.getValue());
+				AuthenticatorFront.login(telephoneCookie.getValue(), passwordCookie.getValue());
 				// continue to your path
 				chain.doFilter(request, response);
 			} catch (Exception e) {

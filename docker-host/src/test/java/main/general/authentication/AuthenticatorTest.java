@@ -39,7 +39,7 @@ public class AuthenticatorTest {
 	public void before() {
 		try {
 			for (String currentPhone : TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES) {
-				String deleteQueryTemplate = "DELETE FROM users WHERE tel like %s";
+				String deleteQueryTemplate = "DELETE FROM users WHERE telephone like %s";
 				String deleteQuery = String.format(deleteQueryTemplate, currentPhone);
 				MysqlConnector.set(deleteQuery);
 			}
@@ -55,7 +55,7 @@ public class AuthenticatorTest {
 	public void after() {
 		try {
 			for (String currentPhone : TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES) {
-				String deleteQueryTemplate = "DELETE FROM users WHERE tel like %s";
+				String deleteQueryTemplate = "DELETE FROM users WHERE telephone like %s";
 				String deleteQuery = String.format(deleteQueryTemplate, currentPhone);
 				MysqlConnector.set(deleteQuery);
 			}
@@ -130,7 +130,7 @@ public class AuthenticatorTest {
 	@Test
 	public void testIsExistsTelephoneNumber() throws Exception {
 		// create a new entry
-		String insertQuery = "INSERT INTO users(tel,pass) VALUES('"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]+"','"+validatedPassword+"')";
+		String insertQuery = "INSERT INTO users(telephone,password) VALUES('"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]+"','"+validatedPassword+"')";
 		MysqlConnector.set(insertQuery);
 
 		User user = new User();
@@ -143,7 +143,7 @@ public class AuthenticatorTest {
 			throw new Exception("inserted phone nubmer doesn't exists!");
 		}
 		// delte new instance
-		String deleteQuery = "DELETE FROM users WHERE tel like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]+"' and pass like '"+validatedPassword+"'";
+		String deleteQuery = "DELETE FROM users WHERE telephone like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]+"' and password like '"+validatedPassword+"'";
 		MysqlConnector.set(deleteQuery);
 
 		boolean isExistsTel2 = Authenticator.isExistsTelephoneNumber(user);
@@ -160,7 +160,7 @@ public class AuthenticatorTest {
 	@Test
 	public void testGetTelephoneNumberAndPassword() throws Exception {
 		// insert new entry
-		String insertQuery = "INSERT INTO users(tel,pass) VALUES('"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]+"','"+validatedPassword+"')";
+		String insertQuery = "INSERT INTO users(telephone,password) VALUES('"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]+"','"+validatedPassword+"')";
 		MysqlConnector.set(insertQuery);
 
 		User user = new User();
@@ -174,7 +174,7 @@ public class AuthenticatorTest {
 		}
 
 		// update new entry (pass)
-		String updateQuery1 = "UPDATE users SET pass='"+validatedPassword1+"' WHERE tel like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]+"'and pass like '"+validatedPassword+"'";
+		String updateQuery1 = "UPDATE users SET password='"+validatedPassword1+"' WHERE telephone like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]+"'and password like '"+validatedPassword+"'";
 		MysqlConnector.set(updateQuery1);
 
 		// don't update password from user we want use our previous datas
@@ -189,10 +189,10 @@ public class AuthenticatorTest {
 			throw new Exception("updated password exists!");
 		}
 		// update new entry (nubmer)
-		String updateQuery2 = "UPDATE users SET tel='"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]+"' WHERE tel like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]+"'and pass like '"+validatedPassword1+"'";
+		String updateQuery2 = "UPDATE users SET telephone='"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]+"' WHERE telephone like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]+"'and password like '"+validatedPassword1+"'";
 		MysqlConnector.set(updateQuery2);
 
-		// don't update tel from user we want use our previous datas but set passwrod to
+		// don't update telephone from user we want use our previous datas but set passwrod to
 		// ensure
 		user.setPassword(validatedPassword1);
 		isFail = false;
@@ -220,7 +220,7 @@ public class AuthenticatorTest {
 
 		Authenticator.insertNewUser(user);
 		// get added user from database
-		String query = "SELECT * FROM users WHERE tel like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]+"' and pass like '"+validatedPassword+"'";
+		String query = "SELECT * FROM users WHERE telephone like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]+"' and password like '"+validatedPassword+"'";
 		ResultSet set = MysqlConnector.get(query);
 		if (!set.next()) {
 			throw new Exception("the user wasn't added");

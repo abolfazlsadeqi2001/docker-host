@@ -12,29 +12,29 @@ public class MysqlConnectorTest {
 	
 	@Test
 	public void testSet() throws Exception {
-		String insertQuery = "INSERT INTO users(tel,pass) VALUES('"+phones[0]+"','"+passwords[0]+"')";
+		String insertQuery = "INSERT INTO users(telephone,password) VALUES('"+phones[0]+"','"+passwords[0]+"')";
 		MysqlConnector.set(insertQuery);
 		
-		String updateQuery = "UPDATE users SET tel='"+phones[1]+"' WHERE tel like '"+phones[0]+"' and pass like '"+passwords[0]+"' ";
+		String updateQuery = "UPDATE users SET telephone='"+phones[1]+"' WHERE telephone like '"+phones[0]+"' and password like '"+passwords[0]+"' ";
 		MysqlConnector.set(updateQuery);
 		
-		String deleteQuery = "DELETE from users WHERE tel like '"+phones[1]+"' and pass like '"+passwords[0]+"'";
+		String deleteQuery = "DELETE from users WHERE telephone like '"+phones[1]+"' and password like '"+passwords[0]+"'";
 		MysqlConnector.set(deleteQuery);
 	}
 	
 	@Test
 	public void testGet() throws Exception {
-		String insertQuery = "INSERT INTO users(tel,pass) VALUES('"+phones[0]+"','"+passwords[0]+"')";
+		String insertQuery = "INSERT INTO users(telephone,password) VALUES('"+phones[0]+"','"+passwords[0]+"')";
 		MysqlConnector.set(insertQuery);
 		
-		String selectQuery = "SELECT * FROM users WHERE tel like '"+phones[0]+"' and pass like '"+passwords[0]+"'";
+		String selectQuery = "SELECT * FROM users WHERE telephone like '"+phones[0]+"' and password like '"+passwords[0]+"'";
 		ResultSet set = MysqlConnector.get(selectQuery);
 		
 		if(!set.next()) {
 			throw new Exception("inserted entry not found!");
 		}
 		
-		String deleteQuery = "DELETE from users WHERE tel like '"+phones[0]+"'";
+		String deleteQuery = "DELETE from users WHERE telephone like '"+phones[0]+"'";
 		MysqlConnector.set(deleteQuery);
 		
 		set.close();

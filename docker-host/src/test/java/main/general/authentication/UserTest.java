@@ -21,7 +21,7 @@ public class UserTest {
 		user2.setId(2);
 
 		if (!user1.equalsByTelephoneAndPassword(user2))
-			throw new Exception("same users pass and tel don't equal!");
+			throw new Exception("same users passwrod and telephone don't equal!");
 
 		if (user1.equals(user2))
 			throw new Exception("different ids equal!");
