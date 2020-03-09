@@ -17,9 +17,11 @@ You can have many docker-host-client on different servers but you cannot have mo
 This folder include .sh files for test by command line apps like curl (which give you some information about what will must happen after run this shell script and if it not where is the code might have wrong)
 
 ## TODO
+- [x] Implements authentication system
 - [ ] Implements cachable memory for autherization (0.041s performance foreach request)
-- [ ] Implements a css framework instead of using myown css
 - [ ] Implements more fields on register like name and family and repassword
+- [ ] Implements user panel
+- [ ] Implements a css framework
 - [ ] Implements send code using Kavenegar to mobile for confirm and forget password
-- [ ] Implements Hibernate instead of writing queries
 - [ ] Write docker-host-client project
+- [ ] Implements selling service system
