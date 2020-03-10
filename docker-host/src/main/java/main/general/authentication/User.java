@@ -1,5 +1,12 @@
 package main.general.authentication;
 
+/**
+ * each changes in this class must applied into
+ * {@link main.general.authentication.AuthenticatorFront#register(String, String)} and
+ * {@link main.general.authentication.AuthenticatorFront#login(String, String)}
+ * @author abolfazlsadeqi2001
+ *
+ */
 public class User {
 	private String telephone;
 	private String password;

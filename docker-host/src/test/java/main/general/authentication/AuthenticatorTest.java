@@ -168,7 +168,7 @@ public class AuthenticatorTest {
 		user.setTelephone(TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[1]);
 
 		try {
-			Authenticator.getByTelephoneAndPassword(user);
+			Authenticator.getByTelephoneAndPasswordFromDatabase(user);
 		} catch (Exception e) {
 			throw new Exception("inserted phone nubmer doesn't exists!");
 		}
@@ -180,7 +180,7 @@ public class AuthenticatorTest {
 		// don't update password from user we want use our previous datas
 		boolean isFail = false;
 		try {
-			Authenticator.getByTelephoneAndPassword(user);
+			Authenticator.getByTelephoneAndPasswordFromDatabase(user);
 		} catch (Exception e) {
 			isFail = true;
 		}
@@ -197,7 +197,7 @@ public class AuthenticatorTest {
 		user.setPassword(validatedPassword1);
 		isFail = false;
 		try {
-			Authenticator.getByTelephoneAndPassword(user);
+			Authenticator.getByTelephoneAndPasswordFromDatabase(user);
 		} catch (Exception e) {
 			isFail = true;
 		}
