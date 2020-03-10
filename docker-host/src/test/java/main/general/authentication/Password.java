@@ -1,10 +1,10 @@
 package main.general.authentication;
 
-public class InvalidPassword {
+public class Password {
 	private String password;
 	private String message;
 	
-	public InvalidPassword(String password, String message) {
+	public Password(String password, String message) {
 		super();
 		this.password = password;
 		this.message = message;

@@ -3,7 +3,9 @@ package main.general.authentication;
 /**
  * each changes in this class must applied into
  * {@link main.general.authentication.AuthenticatorFront#register(String, String)} and
- * {@link main.general.authentication.AuthenticatorFront#login(String, String)}
+ * {@link main.general.authentication.AuthenticatorFront#login(String, String)} and test case in
+ * {@link main.general.authentication.UserTest} also in
+ * {@link main.general.authentication.User#toString()}
  * @author abolfazlsadeqi2001
  *
  */
@@ -73,5 +75,17 @@ public class User {
 			return false;
 
 		return equalsByTelephoneAndPassword(user);
+	}
+	
+	@Override
+	public String toString() {
+		String body = "";
+		
+		body += "exception:"+getExceptionMessage()+"|";
+		body += "id:"+getId()+"|";
+		body += "telephone:"+getTelephone()+"|";
+		body += "password:"+getPassword()+"|";
+		
+		return body;
 	}
 }

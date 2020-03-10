@@ -33,29 +33,20 @@ import main.general.database.mysql.MysqlConnector;
  * database)</li>
  * </ol>
  * 
- * @author abolfazlsadeqi2001 
+ * @author abolfazlsadeqi2001
  * @see {@link main.controllers.authentication.AuthenticationController}
  */
 @Component
 public class Authenticator {
 	// cache section
-	private static Set<UserCache> users = new HashSet<UserCache>();
+	static Set<UserCache> users = new HashSet<UserCache>();
 	static final int MINUTES_TO_REMOVE_FROM_CACHE = 10;
 	static final int SECONDS_TO_REMOVE_FROM_CACHE = 0;
+	static final int MAXIMUM_VALIDATE_MINUTES = 59;
+	static final int MAXIMUM_VALIDATE_HOUR = 23;
 	// validating password section
 	private static final int PASSWORD_MIN_LENGTH = 8;
 	private static final int PASSWORD_MAX_LENGTH = 12;
-	
-	/**
-	 * get telephone and password after validating get an user instance which
-	 * include all of user properties in database if they aren't exists in database
-	 * or they aren't valid return null
-	 * 
-	 * @param telephone string telephone nubmer
-	 * @param password  sring password
-	 * @return return an user that has all his properties from cache or database if
-	 *         an exception wasn't thrown
-	 */
 
 	/**
 	 * this method validate the password as out criterias like length and has
@@ -107,115 +98,125 @@ public class Authenticator {
 	}
 
 	/**
-	 * TODO make test
-	 * get expire time by {@value main.general.authentication.Authenticator#MINUTES_TO_REMOVE_FROM_CACHE} minutes and
-	 * {@value main.general.authentication.Authenticator#SECONDS_TO_REMOVE_FROM_CACHE} seconds after current time
+	 * get expire time by
+	 * {@value main.general.authentication.Authenticator#MINUTES_TO_REMOVE_FROM_CACHE}
+	 * minutes after current time
+	 * 
 	 * @return expireTime
 	 */
 	static LocalTime getExpireTime() {
 		int currentHour = LocalTime.now().getHour();
-		int expireMinutes = LocalTime.now().getMinute()+MINUTES_TO_REMOVE_FROM_CACHE;
-		int expireSeconds = LocalTime.now().getSecond()+SECONDS_TO_REMOVE_FROM_CACHE;
-		LocalTime expireTime = LocalTime.of(currentHour,expireMinutes,expireSeconds);
-		
+		int expireMinutes = LocalTime.now().getMinute() + MINUTES_TO_REMOVE_FROM_CACHE;
+
+		if (expireMinutes > MAXIMUM_VALIDATE_MINUTES) {
+			expireMinutes = 0;
+			currentHour += 1;
+			if (currentHour > MAXIMUM_VALIDATE_HOUR) {
+				currentHour = 0;
+			}
+		}
+
+		LocalTime expireTime = LocalTime.of(currentHour, expireMinutes);
+
 		return expireTime;
 	}
-	
+
 	/**
-	 * TODO make test
-	 * this method add the given user to cache memory by a time that equals ten minutes after current time
+	 * this method add the given user to cache memory by a time that equals ten
+	 * minutes after current time
+	 * 
 	 * @param user a user object that you want to add to your cache
 	 */
 	static void attachToCache(User user) {
-		System.out.println("attaching new user");
 		UserCache cache = new UserCache();
 		cache.setExpireTime(getExpireTime());
 		cache.setUser(user);
-		
+
 		users.add(cache);
 	}
-	
+
 	/**
-	 * this method find user just by telephone and password (user param only have to password and telephone)
+	 * this method find user just by telephone and password (user param only have to
+	 * password and telephone) from cache
+	 * 
 	 * @param user user to find by password and telephone
-	 * @return an user object if exists that user by same telephone and password otherwise return null
-	 * TODO write test for cache memory
+	 * @return an user object if exists that user by same telephone and password
+	 *         otherwise return null
 	 */
 	static User getUserByTelephoneAndPasswordFromCache(User user) {
-		System.out.println("start reading from cahce");
 		for (UserCache userCache : users) {
 			User currentUser = userCache.getUser();
-			if(currentUser.equalsByTelephoneAndPassword(user)) {
+			if (currentUser.equalsByTelephoneAndPassword(user)) {
 				return user;
 			}
 		}
-		System.out.println("user not found");
 		return null;
 	}
-	
+
 	/**
-	 * this method check all of the attached CacheUsers up to don't expired its expire time if it does remove it
-	 * (it means for a specific time that specified in {@link main.general.authentication.Authenticator#MINUTES_TO_REMOVE_FROM_CACHE}
-	 * and {@link main.general.authentication.Authenticator#SECONDS_TO_REMOVE_FROM_CACHE} the user object doesn't used so it must be deleted
-	 * to clear the memory space)
-	 * TODO add schedule for this
-	 * TODO make test
+	 * this method check all of the attached CacheUsers up to don't expired its
+	 * expire time if it does remove it (it means for a specific time that specified
+	 * in
+	 * {@link main.general.authentication.Authenticator#MINUTES_TO_REMOVE_FROM_CACHE}
+	 * and
+	 * {@link main.general.authentication.Authenticator#SECONDS_TO_REMOVE_FROM_CACHE}
+	 * the user object doesn't used so it must be deleted to clear the memory space)
 	 */
 	@Scheduled(fixedRate = MINUTES_TO_REMOVE_FROM_CACHE * 60 * 1000)
 	static void checkExpireCachesTime() {
-		System.out.println("check expire time up");
 		for (UserCache userCache : users) {
 			LocalTime now = LocalTime.now();
 			LocalTime expireCacheTime = userCache.getExpireTime();
-			
+
 			int compareResult = now.compareTo(expireCacheTime);
-			if(compareResult <= 0) {
+			if (compareResult <= 0) {
 				users.remove(userCache);
 			}
 		}
 	}
-	
+
 	/**
-	 * return existance of telephone number in database
+	 * return existence of telephone number in database
 	 * 
 	 * @param user User object which contain the telephone number
 	 * @return return true when in database we have a telephone number like param
 	 * @throws Exception exception when connect and execute the query
 	 */
-	static boolean isExistsTelephoneNumber(User user) throws Exception {
+	static boolean isExistsTelephoneNumberInDatabase(User user) throws Exception {
 		String queryTemplate = "SELECT * FROM users WHERE telephone='%s'";
 		String query = String.format(queryTemplate, user.getTelephone());
 		ResultSet set = MysqlConnector.get(query);
 
-		if(set.next()) {
+		if (set.next()) {
 			return true;
 		}
 		// if in set doesn't any phone match return false
 		return false;
 	}
-	
+
 	/**
-	 * return existance of telephone number that have a same password in database
+	 * return existence of telephone number that have a same password in database
 	 * 
 	 * @param user User object which contain the telephone number and password
 	 * @return if have a row that include the same number and same password return
-	 *         that row by resultset otherwise return null
+	 *         that row by result set otherwise return null
 	 * @throws Exception exception when connect and execute the query
-	 */ 
+	 */
 	static ResultSet getByTelephoneAndPasswordFromDatabase(User user) throws Exception {
 		String queryTemplate = "SELECT * FROM users WHERE telephone='%s' and password='%s'";
 		String query = String.format(queryTemplate, user.getTelephone(), user.getPassword());
 		ResultSet set = MysqlConnector.get(query);
 
-		if(set.next()) {// if we have at least 1 row
+		if (set.next()) {// if we have at least 1 row
 			return set;// return and do not throw exception in following command
 		}
-		
+
 		throw new Exception("unknown user in database");
 	}
 
 	/**
 	 * insert an user data into database
+	 * 
 	 * @param user include all datas to save into database
 	 * @throws Exception exception when connect and execute the query
 	 */

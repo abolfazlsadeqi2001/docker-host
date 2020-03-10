@@ -1,6 +1,9 @@
 package main.general.authentication;
 
 import java.sql.ResultSet;
+import java.time.LocalTime;
+
+import javax.swing.JOptionPane;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,33 +14,39 @@ import main.general.authentication.User;
 import main.general.database.mysql.MysqlConnector;
 
 public class AuthenticatorTest {
+	// expire time section
+	private final int MINIMUM_MINUTES_FOR_EXPIRE_DATE = 5;
+	private final int MAXIMUM_VALIDATE_MINUTES = 59;
+	private final int MAXIMUM_VALIDATE_HOUR = 23;
 	// phone section
 	private final static String[] TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES = new String[] { "1111", "2222" };
-	private final InvalidPhone[] invalidPhones = new InvalidPhone[] {
-			new InvalidPhone("051-57388377", "allowed a home nubmer with -"),
-			new InvalidPhone("02152782121", "validated a home nubmer without -"),
-			new InvalidPhone("0930039295", "validated a short phone number"),
-			new InvalidPhone("093003925687", "validated a long phone number"),
-			new InvalidPhone("19397536145", "validated a phone number start with 1"),
-			new InvalidPhone("02397543487", "validated a phone nubmer start wit 02"),
-			new InvalidPhone("nothing", "allowed the default value of controller") };
+	private final Phone[] invalidPhones = new Phone[] {
+			new Phone("051-57388377", "allowed a home nubmer with -"),
+			new Phone("02152782121", "validated a home nubmer without -"),
+			new Phone("0930039295", "validated a short phone number"),
+			new Phone("093003925687", "validated a long phone number"),
+			new Phone("19397536145", "validated a phone number start with 1"),
+			new Phone("02397543487", "validated a phone nubmer start wit 02"),
+			new Phone("nothing", "allowed the default value of controller") };
 	private final String validatedPhone = "09397531212";
 	// password section
-	private final InvalidPassword[] invalidPasswords = new InvalidPassword[] {
-			new InvalidPassword("1434123412", "allowed only numberic"),
-			new InvalidPassword("ababdxogdas", "allowed only ahphabetical"),
-			new InvalidPassword("ababd12", "allowed short length password"),
-			new InvalidPassword("abaabd1234456", "allowed large length password"),
-			new InvalidPassword("nothing", "allowed the default value of controller") };
+	private final Password[] invalidPasswords = new Password[] {
+			new Password("1434123412", "allowed only numberic"),
+			new Password("ababdxogdas", "allowed only ahphabetical"),
+			new Password("ababd12", "allowed short length password"),
+			new Password("abaabd1234456", "allowed large length password"),
+			new Password("nothing", "allowed the default value of controller") };
 	private final String validatedPassword = "ababdxoro13";
 	private final String validatedPassword1 = "ababdxoro1";
 
 	/**
-	 * each telephone number saved in database as test must removed before
+	 * each telephone number saved in database as test must removed before<br>
+	 * users set in Authenticator must clear
 	 */
 	@BeforeEach
 	public void before() {
 		try {
+			Authenticator.users.clear();
 			for (String currentPhone : TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES) {
 				String deleteQueryTemplate = "DELETE FROM users WHERE telephone like %s";
 				String deleteQuery = String.format(deleteQueryTemplate, currentPhone);
@@ -74,7 +83,7 @@ public class AuthenticatorTest {
 	public void testValidatePassword() throws Exception {
 		String errorMessage = "";
 		// invalid passwords test
-		for (InvalidPassword invalidPassword : invalidPasswords) {
+		for (Password invalidPassword : invalidPasswords) {
 			try {
 				Authenticator.validatePassword(invalidPassword.getPassword());
 				errorMessage = invalidPassword.getMessage();
@@ -105,9 +114,9 @@ public class AuthenticatorTest {
 	public void testValidateTelephone() throws Exception {
 		String errorMessage = "";
 		// invalids
-		for (InvalidPhone invalidPhone : invalidPhones) {
+		for (Phone invalidPhone : invalidPhones) {
 			try {
-				Authenticator.validateTelephone(invalidPhone.getPhone());
+				Authenticator.validateTelephone(invalidPhone.getNumber());
 				errorMessage = invalidPhone.getMessage();
 				break;
 			} catch (Exception e) {
@@ -137,7 +146,7 @@ public class AuthenticatorTest {
 		user.setPassword(validatedPassword);
 		user.setTelephone(TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]);
 
-		boolean isExistsTel1 = Authenticator.isExistsTelephoneNumber(user);
+		boolean isExistsTel1 = Authenticator.isExistsTelephoneNumberInDatabase(user);
 
 		if (!isExistsTel1) {
 			throw new Exception("inserted phone nubmer doesn't exists!");
@@ -146,7 +155,7 @@ public class AuthenticatorTest {
 		String deleteQuery = "DELETE FROM users WHERE telephone like '"+TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]+"' and password like '"+validatedPassword+"'";
 		MysqlConnector.set(deleteQuery);
 
-		boolean isExistsTel2 = Authenticator.isExistsTelephoneNumber(user);
+		boolean isExistsTel2 = Authenticator.isExistsTelephoneNumberInDatabase(user);
 
 		if (isExistsTel2) {
 			throw new Exception("deleted phone nubmer exists!");
@@ -227,4 +236,124 @@ public class AuthenticatorTest {
 		}
 	}
 
+	// this method test that the getExpireTime get a time more than expected minimumExpiretime
+	@Test
+	public void testGetExpireTime() throws Exception {
+		// test that the expire time must bigger than expected minimum
+		int currentHour = LocalTime.now().getHour();
+		int expireMinutes = LocalTime.now().getMinute()+MINIMUM_MINUTES_FOR_EXPIRE_DATE;
+		if(expireMinutes > MAXIMUM_VALIDATE_MINUTES) {
+			expireMinutes = 0;
+			currentHour += 1;
+			if(currentHour > MAXIMUM_VALIDATE_HOUR) {
+				currentHour = 0;
+			}
+		}
+		LocalTime minimumExpireTime = LocalTime.of(currentHour,expireMinutes);
+		
+		LocalTime expireTime = Authenticator.getExpireTime();
+		
+		int comparationResult = expireTime.compareTo(minimumExpireTime);
+		
+		if(comparationResult < 0) {
+			throw new Exception("the expire time is less than "+minimumExpireTime);
+		}
+		// check up the maximum validate hour and minutes
+		if(Authenticator.MAXIMUM_VALIDATE_HOUR != MAXIMUM_VALIDATE_HOUR) {
+			throw new Exception("problem with Maximum validate hour");
+		}
+		
+		if(Authenticator.MAXIMUM_VALIDATE_MINUTES != MAXIMUM_VALIDATE_MINUTES) {
+			throw new Exception("problem with Maximum validate minutes");
+		}
+		// check for make an expire time in 23:59 (it mustn't throw an exception)
+		JOptionPane.showMessageDialog(null, "make your system time to 23:59 \n"+
+		"as you must know that the localtime throw an exception when make an hour more than 23\n"+
+		"when our expire minutes more than 59 it must equals the minutes to 0 and ++ the hour\n"+
+		"otherwise it throw an exception and if the time is 23+1 it is more than 23 so throw exception\n"+
+		"after do that click on ok to test");
+		Authenticator.getExpireTime();
+	}
+	
+	@Test
+	public void testAttachToCache() throws Exception {
+		User user = new User();
+		// check the users set size (must be one)
+		Authenticator.attachToCache(user);
+		int size = Authenticator.users.size();
+		if(size != 1) {
+			throw new Exception("user doesn't add");
+		}
+		// check to have a same reference by our user
+		User gotUser = Authenticator.getUserByTelephoneAndPasswordFromCache(user);
+		if(gotUser != user) {
+			throw new Exception("the users reference don't match");
+		}
+		// check to have a expire time
+		int currentHour = LocalTime.now().getHour();
+		int expireMinutes = LocalTime.now().getMinute()+MINIMUM_MINUTES_FOR_EXPIRE_DATE;
+		if(expireMinutes > MAXIMUM_VALIDATE_MINUTES) {
+			expireMinutes = 0;
+			currentHour += 1;
+			if(currentHour > MAXIMUM_VALIDATE_HOUR) {
+				currentHour = 0;
+			}
+		}
+		LocalTime minimumExpireTime = LocalTime.of(currentHour,expireMinutes);
+		
+		UserCache cache = Authenticator.users.iterator().next();
+		int result = cache.getExpireTime().compareTo(minimumExpireTime);
+		if(result < 0) {
+			throw new Exception("cache expire time less than minimum expire time");
+		}
+	}
+	
+	@Test
+	public void testGetUserByTelephoneAndPasswordFromCache() throws Exception {
+		User user1 = new User();
+		user1.setId(1);
+		user1.setPassword("mamad");
+		user1.setTelephone("091");
+		Authenticator.attachToCache(user1);
+		user1.setPassword("alil");
+		
+		User user2 = new User();
+		user2.setId(2);
+		user2.setPassword("ali");
+		user2.setTelephone("092");
+		Authenticator.attachToCache(user2);
+		
+		User gotUser1 = Authenticator.getUserByTelephoneAndPasswordFromCache(user1);
+		if(!gotUser1.equalsByTelephoneAndPassword(user1)) {
+			throw new Exception("user isn't same");
+		}
+		
+		User gotUser2 = Authenticator.getUserByTelephoneAndPasswordFromCache(user1);
+		if(gotUser2.equalsByTelephoneAndPassword(user2)) {
+			throw new Exception("different users are same");
+		}
+		
+		User gotUser3 = Authenticator.getUserByTelephoneAndPasswordFromCache(user2);
+		if(!gotUser3.equalsByTelephoneAndPassword(user2)) {
+			throw new Exception("user isn't same");
+		}
+	}
+	
+	@Test
+	public void testCheckExpireCachesTime() throws Exception {
+		User user = new User();
+		
+		LocalTime expiredTime = LocalTime.of(LocalTime.now().getHour(), LocalTime.now().getMinute()-1);
+		
+		UserCache cache = new UserCache();
+		cache.setUser(user);
+		cache.setExpireTime(expiredTime);
+		
+		Authenticator.checkExpireCachesTime();
+		
+		int size = Authenticator.users.size();
+		if(size != 0) {
+			throw new Exception("size must be 0");
+		}
+	}
 }
