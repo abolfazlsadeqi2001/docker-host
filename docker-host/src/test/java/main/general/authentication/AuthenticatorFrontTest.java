@@ -165,14 +165,27 @@ public class AuthenticatorFrontTest {
 	
 	@Test
 	public void testLoginToAttachNewUserToCache() throws Exception {
+		User user = new User();
+		user.setAge(validAges[0].getAge());
+		user.setName(validNames[0].getName());
+		user.setFamily(validFamilies[0].getFamily());
+		user.setTelephone(validPhones[0].getNumber());
+		user.setPassword(validPasswords[0].getPassword());
+		
 		String insertTemplete = "INSERT INTO users(telephone,password,name,family,age) values('%s','%s','%s','%s','%d')";
-		String query = String.format(insertTemplete, validPhones[0].getNumber(), validPasswords[0].getPassword(),validNames[0].getName(),validFamilies[0].getFamily(),validAges[0].getAge());
+		String query = String.format(insertTemplete, user.getTelephone(), user.getPassword(), user.getName(), user.getFamily(), user.getAge());
 		MysqlConnector.set(query);
 		
-		AuthenticatorFront.login(validPhones[0].getNumber(), validPasswords[0].getPassword());
-		boolean result = Authenticator.users.size() != 0;
-		if(!result) {
-			throw new Exception("size greator than 0");
+		User gottenUser = AuthenticatorFront.login(validPhones[0].getNumber(), validPasswords[0].getPassword());
+		if(Authenticator.users.size() != 1) {
+			System.out.println("users cahce set doesn't equals 1");
+		}
+		if(!Authenticator.users.iterator().next().getUser().equalsByTelephoneAndPassword(user)) {
+			System.out.println("the first cached user element doesn't has match telephone and password");
+		}
+		
+		if(!gottenUser.equalsByTelephoneAndPassword(user)) {
+			System.out.println("the gotten doesn't has match telephone and password");
 		}
 	}
 	
@@ -181,10 +194,13 @@ public class AuthenticatorFrontTest {
 		User user = new User();
 		user.setTelephone(validPhones[0].getNumber());
 		user.setPassword(validPasswords[0].getPassword());
+		user.setName(validNames[0].getName());
+		user.setFamily(validFamilies[0].getFamily());
+		user.setAge(validAges[0].getAge());
 		
-		AuthenticatorFront.register(validPhones[0].getNumber(), validPasswords[0].getPassword(),validNames[0].getName(),validFamilies[0].getFamily(),validAges[0].getAge());
+		AuthenticatorFront.register(user.getTelephone(), user.getPassword(),user.getName(),user.getFamily(),user.getAge());
 		User gotUser = Authenticator.getUserByTelephoneAndPasswordFromCache(user);
-		if(!gotUser.equalsByTelephoneAndPassword(user)) {
+		if(!gotUser.equalsByTelephoneAndPassword(user)) {// don't use equal because id generated in database
 			throw new Exception("the gotten user wasn't equals.what the hell was that man");
 		}
 	}
