@@ -11,10 +11,17 @@ public class MysqlConnectorTest {
 	// TODO check unique up
 	private final String[] phones = new String[] {"1111","2222"};
 	private final String[] passwords = new String[] {"aa11","bb22"};
+	private final String[] names = new String[] {"abolfazl","alis"};
+	private final String[] families = new String[] {"abolfazl","alis"};
+	private final int[] ages = new int[] {12,14};
 	
 	@Test
 	public void testSet() throws Exception {
-		String insertQuery = "INSERT INTO users(telephone,password) VALUES('"+phones[0]+"','"+passwords[0]+"')";
+		String insertQuery = "INSERT INTO users(telephone,password,name,family,age) VALUES('"+phones[0]+"','"+
+				passwords[0]+"','"+
+				names[0]+"','"+
+				families[0]+"','"+
+				ages[0]+"')";
 		MysqlConnector.set(insertQuery);
 		
 		String updateQuery = "UPDATE users SET telephone='"+phones[1]+"' WHERE telephone like '"+phones[0]+"' and password like '"+passwords[0]+"' ";
@@ -26,7 +33,11 @@ public class MysqlConnectorTest {
 	
 	@Test
 	public void testGet() throws Exception {
-		String insertQuery = "INSERT INTO users(telephone,password) VALUES('"+phones[0]+"','"+passwords[0]+"')";
+		String insertQuery = "INSERT INTO users(telephone,password,name,family,age) VALUES('"+phones[0]+"','"+
+				passwords[0]+"','"+
+				names[0]+"','"+
+				families[0]+"','"+
+				ages[0]+"')";
 		MysqlConnector.set(insertQuery);
 		
 		String selectQuery = "SELECT * FROM users WHERE telephone like '"+phones[0]+"' and password like '"+passwords[0]+"'";

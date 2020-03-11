@@ -45,12 +45,12 @@ public class AuthenticationController {
 			Cookie passwordCookie = new Cookie("password",password);
 			res.addCookie(telephoneCookie);
 			res.addCookie(passwordCookie);
+			// go to user panel
+			return "/user-panel";
 		} catch (Exception e) {
 			user.setExceptionMessage(e.getMessage());
 			return "/authentication";
 		}
-
-		return "/user-panel";
 	}
 	
 	@RequestMapping(value="/register",method = RequestMethod.POST)
