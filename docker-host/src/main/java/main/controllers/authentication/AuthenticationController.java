@@ -1,5 +1,8 @@
 package main.controllers.authentication;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +34,17 @@ public class AuthenticationController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@RequestParam(defaultValue = "nothing", name = "telephone") String telephone,
 			@RequestParam(defaultValue = "nothing", name = "password") String password,
+			HttpServletResponse res,
 			Model model) {
 		User user = new User();
 		model.addAttribute(user);
 		try {
 			AuthenticatorFront.login(telephone, password);
+			// save cookies
+			Cookie telephoneCookie = new Cookie("telephone",telephone);
+			Cookie passwordCookie = new Cookie("password",password);
+			res.addCookie(telephoneCookie);
+			res.addCookie(passwordCookie);
 		} catch (Exception e) {
 			user.setExceptionMessage(e.getMessage());
 			return "/authentication";
@@ -50,9 +59,16 @@ public class AuthenticationController {
 			@RequestParam(defaultValue = "nothing", name = "name") String name,
 			@RequestParam(defaultValue = "nothing", name = "family") String family,
 			@RequestParam(defaultValue = "0" , name = "age") int age,
+			HttpServletResponse res,
 			Model model) {
 		try {
 			User user = AuthenticatorFront.register(telephone, password,name,family,age);
+			// save cookies
+			Cookie telephoneCookie = new Cookie("telephone",telephone);
+			Cookie passwordCookie = new Cookie("password",password);
+			res.addCookie(telephoneCookie);
+			res.addCookie(passwordCookie);
+			// setup model then go to user panel
 			model.addAttribute(user);
 			return "/user-panel";
 		} catch (Exception e) {

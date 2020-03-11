@@ -102,7 +102,6 @@ public class Authenticator {
 
 	/**
 	 * just check the age number out for be between on min and max number
-	 * TODO write test
 	 * @param age int
 	 * @return return the name if meet the standards
 	 * @throws Exception
