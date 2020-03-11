@@ -32,6 +32,18 @@
 	<form name="register-form" method="POST" accept-charset="ASCII" autocomplete="off" action="/register">
 		<fieldset>
 			<legend>Register</legend>
+			<label for="name">name: </label>
+			<br>
+			<input type="text" name="name" id="name" required="required" pattern="[a-zA-Z0-9]{3,8}" title="just use the numbers and english chars.length must 3 at least" />
+			<br>
+			<label for="family">family: </label>
+			<br>
+			<input type="text" name="family" id="family" required="required" pattern="[a-zA-Z0-9]{3,8}" title="just use the numbers and english chars.length must 3 at least" />
+			<br>
+			<label for="age">age: </label>
+			<br>
+			<input type="number" name="age" id="age" required="required" min="7" max="71" title="minimum age is seven and maximum is 71" />
+			<br>
 			<label for="telephone">telephone number: </label>
 			<br>
 			<input type="text" name="telephone" id="telephone" required="required" pattern="09[0-9]{9}" title="telephone number must start with 09(Iranina mobile)" />

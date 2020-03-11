@@ -24,11 +24,17 @@ public class AuthenticatorFront {
 		 */
 		User cachedUser = Authenticator.getUserByTelephoneAndPasswordFromCache(user);
 		if(cachedUser != null) {
-			return cachedUser;
+			user.setUserId(cachedUser.getUserId());
+			user.setName(cachedUser.getName());
+			user.setFamily(cachedUser.getFamily());
+			user.setAge(cachedUser.getAge());
 		}else {// get whole user datas using result set from database then close it and add the user to cache memory
 			ResultSet set = Authenticator.getByTelephoneAndPasswordFromDatabase(user);
 			
-			user.setId(set.getInt("id"));
+			user.setUserId(set.getInt("id"));
+			user.setName(set.getString("name"));
+			user.setFamily(set.getString("family"));
+			user.setAge(set.getInt("age"));
 			
 			Authenticator.attachToCache(user);
 			set.close();
@@ -42,16 +48,20 @@ public class AuthenticatorFront {
 	 * any exception mean register process fail<br>
 	 * exception messages usually are written by myself that means they are can be used for give users some information
 	 * about why he cannot register or login
+	 * TODO write test
 	 * @param telephone
 	 * @param password
 	 * @return return an user if the process of saving doesn't have any exception
 	 * @throws Exception exceptions in process of saving to database
 	 */
-	public static User register(String telephone, String password) throws Exception {
+	public static User register(String telephone, String password,String name,String family,int age) throws Exception {
 		User user = new User();
 		// set user fields to validate from cache or database
 		user.setPassword(Authenticator.validatePassword(password));
 		user.setTelephone(Authenticator.validateTelephone(telephone));
+		user.setAge(Authenticator.validateAge(age));
+		user.setFamily(Authenticator.validateFamily(family));
+		user.setName(Authenticator.validateName(name));
 		// check that the telephone number doesn't exists
 		if (Authenticator.isExistsTelephoneNumberInDatabase(user)) {
 			throw new Exception("anoher user use a same phone number");
@@ -60,7 +70,7 @@ public class AuthenticatorFront {
 		Authenticator.insertNewUser(user);
 		// get user datas on database (just id)
 		ResultSet set = Authenticator.getByTelephoneAndPasswordFromDatabase(user);
-		user.setId(set.getInt("id"));
+		user.setUserId(set.getInt("id"));
 		// attach new user to cache and return it
 		Authenticator.attachToCache(user);
 		set.close();

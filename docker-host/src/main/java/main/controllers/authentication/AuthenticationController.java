@@ -46,16 +46,19 @@ public class AuthenticationController {
 	@RequestMapping(value="/register",method = RequestMethod.POST)
 	public String register(@RequestParam(defaultValue = "nothing", name = "telephone") String telephone,
 			@RequestParam(defaultValue = "nothing", name = "password") String password,
+			@RequestParam(defaultValue = "nothing", name = "name") String name,
+			@RequestParam(defaultValue = "nothing", name = "family") String family,
+			@RequestParam(defaultValue = "0" , name = "age") int age,
 			Model model) {
-		User user = new User();
-		model.addAttribute(user);
 		try {
-			AuthenticatorFront.register(telephone, password);
+			User user = AuthenticatorFront.register(telephone, password,name,family,age);
+			model.addAttribute(user);
+			return "/user-panel";
 		} catch (Exception e) {
+			User user = new User();
 			user.setExceptionMessage(e.getMessage());
+			model.addAttribute(user);
 			return "/authentication";
 		}
-
-		return "/user-panel";
 	}
 }

@@ -38,6 +38,9 @@ import main.general.database.mysql.MysqlConnector;
  */
 @Component
 public class Authenticator {
+	// age section
+	static final int MINIMUM_AGE = 7;
+	static final int MAXIMUM_AGE = 71;
 	// cache section
 	static Set<UserCache> users = new HashSet<UserCache>();
 	static final int MINUTES_TO_REMOVE_FROM_CACHE = 10;
@@ -98,6 +101,51 @@ public class Authenticator {
 	}
 
 	/**
+	 * just check the age number out for be between on min and max number
+	 * TODO write test
+	 * @param age int
+	 * @return return the name if meet the standards
+	 * @throws Exception
+	 */
+	static int validateAge(int age) throws Exception {
+		if(age < MINIMUM_AGE)
+			throw new Exception("you haven't enough age");
+		if(age > MAXIMUM_AGE)
+			throw new Exception("you have a lot of age");
+		return age;
+	}
+	
+	/**
+	 * validate the name if it meet the standards return validated name(trimed)
+	 * @param name String
+	 * @return
+	 * @throws Exception
+	 */
+	static String validateName(String name) throws Exception {
+		String pattern = "^[a-zA-Z0-9]{3,8}$";
+		name = name.trim();
+		if(!Pattern.matches(pattern, name)) {
+			throw new Exception("invalid name");
+		}
+		return name;
+	}
+	
+	/**
+	 * validate the family if it meet the standards return validated name(trimed)
+	 * @param family String
+	 * @return
+	 * @throws Exception
+	 */
+	static String validateFamily(String family) throws Exception {
+		String pattern = "^[a-zA-Z0-9]{3,8}$";
+		family = family.trim();
+		if(!Pattern.matches(pattern, family)) {
+			throw new Exception("invalid family");
+		}
+		return family;
+	}
+	
+	/**
 	 * get expire time by
 	 * {@value main.general.authentication.Authenticator#MINUTES_TO_REMOVE_FROM_CACHE}
 	 * minutes after current time
@@ -147,7 +195,7 @@ public class Authenticator {
 		for (UserCache userCache : users) {
 			User currentUser = userCache.getUser();
 			if (currentUser.equalsByTelephoneAndPassword(user)) {
-				return user;
+				return currentUser;
 			}
 		}
 		return null;
@@ -221,8 +269,8 @@ public class Authenticator {
 	 * @throws Exception exception when connect and execute the query
 	 */
 	static void insertNewUser(User user) throws Exception {
-		String queryTemplate = "INSERT INTO users(telephone,password) VALUES('%s','%s')";
-		String query = String.format(queryTemplate, user.getTelephone(), user.getPassword());
+		String queryTemplate = "INSERT INTO users(telephone,password,name,family,age) VALUES('%s','%s','%s','%s','%s')";
+		String query = String.format(queryTemplate, user.getTelephone(), user.getPassword(),user.getName(),user.getFamily(),user.getAge());
 		MysqlConnector.set(query);
 	}
 }
