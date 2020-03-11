@@ -18,7 +18,7 @@ This folder include .sh files for test by command line apps like curl (which giv
 
 ## TODO
 - [x] Implements authentication system
-- [ ] Implements cachable memory for autherization (0.041s performance foreach request)
+- [x] Implements cachable memory for autherization (0.041s performance foreach request)
 - [ ] Implements more fields on register like name and family and repassword
 - [ ] Implements user panel
 - [ ] Implements a css framework
