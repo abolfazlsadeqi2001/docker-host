@@ -8,6 +8,7 @@ import main.general.authentication.models.Family;
 import main.general.authentication.models.Name;
 import main.general.authentication.models.Password;
 import main.general.authentication.models.Phone;
+import main.general.authentication.models.User;
 import main.general.database.mysql.MysqlConnector;
 
 /**

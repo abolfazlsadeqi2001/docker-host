@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import main.general.authentication.AuthenticatorFront;
-import main.general.authentication.User;
+import main.general.authentication.models.User;
 
 /**
  * TODO write selenium test for html file

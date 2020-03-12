@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import main.general.authentication.models.User;
+import main.general.authentication.models.UserCache;
 import main.general.database.mysql.MysqlConnector;
 
 /**

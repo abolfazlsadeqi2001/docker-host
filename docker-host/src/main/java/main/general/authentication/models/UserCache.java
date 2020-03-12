@@ -1,4 +1,4 @@
-package main.general.authentication;
+package main.general.authentication.models;
 
 import java.time.LocalTime;
 

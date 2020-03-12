@@ -2,6 +2,8 @@ package main.general.authentication;
 
 import org.junit.jupiter.api.Test;
 
+import main.general.authentication.models.User;
+
 public class UserTest {
 	String[] phones = new String[] {
 		"1111",

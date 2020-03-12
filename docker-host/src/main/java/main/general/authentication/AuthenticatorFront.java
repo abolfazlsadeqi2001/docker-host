@@ -2,6 +2,8 @@ package main.general.authentication;
 
 import java.sql.ResultSet;
 
+import main.general.authentication.models.User;
+
 public class AuthenticatorFront {
 	/**
 	 * to login a user using these fields<br>

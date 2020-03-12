@@ -1,11 +1,11 @@
-package main.general.authentication;
+package main.general.authentication.models;
 
 /**
  * each changes in this class must applied into
  * {@link main.general.authentication.AuthenticatorFront#register(String, String)} and
  * {@link main.general.authentication.AuthenticatorFront#login(String, String)} and test case in
  * {@link main.general.authentication.UserTest} also in
- * {@link main.general.authentication.User#toString()}
+ * {@link main.general.authentication.models.User#toString()}
  * @author abolfazlsadeqi2001
  *
  */
@@ -120,6 +120,9 @@ public class User {
 		body += "id:"+getUserId()+"|";
 		body += "telephone:"+getTelephone()+"|";
 		body += "password:"+getPassword()+"|";
+		body += "name:"+getName()+"|";
+		body += "family:"+getFamily()+"|";
+		body += "age:"+getAge();
 		
 		return body;
 	}
