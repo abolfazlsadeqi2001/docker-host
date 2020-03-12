@@ -9,7 +9,7 @@ import general.SeleniumTestParent;
 
 /**
  * @author abolfazlsadeqi2001
- * @version 1.0.0
+ * @version 1.2.0
  * @see
  * {@link general.SeleniumTestParent}
  */
@@ -88,6 +88,11 @@ public class Index extends SeleniumTestParent {
 	}
 	
 	@Test
+	public void testNameRegisterInput() {
+		driver.findElement(By.cssSelector("form[name='register-form'] input[name='name'][type='text'][title][pattern][required='required']:not([form])"));
+	}
+	
+	@Test
 	public void testSubmitRegisterInput() {
 		driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit'][value='register']:not([formaction])"));
 	}
@@ -106,7 +111,40 @@ public class Index extends SeleniumTestParent {
 	}
 	
 	@Test
-	public void testEmailLoginRegisterPattern() throws Exception {
+	public void testNameRegisterInputPattern() throws Exception {
+		WebElement name = driver.findElement(By.cssSelector("form[name='register-form'] [name='name']"));
+		WebElement submitElement = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
+		String errorInformationMessage = "you have to see a name error";
+		
+		fillInput(name,"ab",errorInformationMessage,"less than 3 chars is accepted",submitElement);
+		fillInput(name,"abolfl123",errorInformationMessage,"more than 8 chars is accepted",submitElement);
+		fillInput(name,"abolfazl","you have to see nothing about name","correct value doesn't allowed",submitElement);
+	}
+	
+	@Test
+	public void testAgeRegisterInputPattern() throws Exception {
+		WebElement age = driver.findElement(By.cssSelector("form[name='register-form'] [name='age']"));
+		WebElement submitElement = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
+		String errorInformationMessage = "you have to see a name error";
+		
+		fillInput(age,"72",errorInformationMessage,"less than 71 is accepted",submitElement);
+		fillInput(age,"6",errorInformationMessage,"less than 7 is accepted",submitElement);
+		fillInput(age,"18","you have not to see anything error about age","correct value doesn't allowed",submitElement);
+	}
+	
+	@Test
+	public void testFamilyRegisterInputPattern() throws Exception {
+		WebElement family = driver.findElement(By.cssSelector("form[name='register-form'] [name='family']"));
+		WebElement submitElement = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
+		String errorInformationMessage = "you have to see a family error";
+		
+		fillInput(family,"ab",errorInformationMessage,"less than 3 chars is accepted",submitElement);
+		fillInput(family,"abolfl123",errorInformationMessage,"more than 8 chars is accepted",submitElement);
+		fillInput(family,"abolfazl","you have to see nothing about family","correct value doesn't allowed",submitElement);
+	}
+	
+	@Test
+	public void testEmailRegisterPattern() throws Exception {
 		WebElement telephone = driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"));
 		WebElement password = driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"));
 		WebElement submit = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
