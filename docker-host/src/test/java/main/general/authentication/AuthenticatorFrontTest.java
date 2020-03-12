@@ -196,6 +196,28 @@ public class AuthenticatorFrontTest {
 	}
 	
 	@Test
+	public void testDontAddToCahceOnWrongLogin() throws Exception {
+		try {
+			AuthenticatorFront.login(validPhones[0].getNumber(), validPasswords[0].getPassword());
+		} catch (Exception e) {
+		} finally {
+			if(Authenticator.users.size() != 0)
+				throw new Exception("unknow user on database added to cache by login!");
+		}
+	}
+	
+	@Test
+	public void testDontAddToCahceOnInvalidPropertiesLogin() throws Exception {
+		try {
+			AuthenticatorFront.login(invalidPhones[0].getNumber(), validPasswords[0].getPassword());
+		} catch (Exception e) {
+		} finally {
+			if(Authenticator.users.size() != 0)
+				throw new Exception("unknow user on database added to cache by login!");
+		}
+	}
+	
+	@Test
 	public void testAddingUserOnCorrectRegister() throws Exception {
 		User user = new User();
 		user.setTelephone(validPhones[0].getNumber());
@@ -338,20 +360,28 @@ public class AuthenticatorFrontTest {
 	}
 	
 	@Test
-	public void testDontAddToCahceOnWrongLogin() throws Exception {
+	public void testDontAddToCahceOnWrongRegister() throws Exception {
 		try {
-			AuthenticatorFront.login(validPhones[0].getNumber(), validPasswords[0].getPassword());
+			AuthenticatorFront.register(validPhones[0].getNumber(),
+					validPasswords[0].getPassword(),
+					validNames[0].getName(),
+					validFamilies[0].getFamily(),
+					validAges[0].getAge());
 		} catch (Exception e) {
 		} finally {
-			if(Authenticator.users.size() != 0)
-				throw new Exception("unknow user on database added to cache by login!");
+			if(Authenticator.users.size() != 1)
+				throw new Exception("unknow user on database doesn't added to cache by login!");
 		}
 	}
 	
 	@Test
-	public void testDontAddToCahceOnInvalidPropertiesLogin() throws Exception {
+	public void testDontAddToCahceOnInvalidPropertiesRegister() throws Exception {
 		try {
-			AuthenticatorFront.login(invalidPhones[0].getNumber(), validPasswords[0].getPassword());
+			AuthenticatorFront.register(invalidPhones[0].getNumber(),
+					validPasswords[0].getPassword(),
+					validNames[0].getName(),
+					validFamilies[0].getFamily(),
+					validAges[0].getAge());
 		} catch (Exception e) {
 		} finally {
 			if(Authenticator.users.size() != 0)
