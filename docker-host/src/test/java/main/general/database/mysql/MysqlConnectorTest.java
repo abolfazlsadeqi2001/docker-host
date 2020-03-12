@@ -105,4 +105,79 @@ public class MysqlConnectorTest {
 			throw new Exception("duplicated telephone elements added to database (telephone must be unique)");
 		}
 	}
+	
+	@Test
+	public void testNotNullOfTelephone() throws Exception {
+		String insertTemplate = "INSERT INTO users(password,name,family,age) VALUES('%s','%s','%s','%s')";
+		boolean isHasException = false;
+		try {
+			String insertQuery2 = String.format(insertTemplate, passwords[1],names[1],families[1],ages[1]);
+			MysqlConnector.set(insertQuery2);
+		} catch (Exception e) {
+			isHasException = true;
+		}
+		if(!isHasException) {
+			throw new Exception("not null property doesn't attach to this column");
+		}
+	}
+	
+	@Test
+	public void testNotNullOfPassword() throws Exception {
+		String insertTemplate = "INSERT INTO users(telephone,name,family,age) VALUES('%s','%s','%s','%s')";
+		boolean isHasException = false;
+		try {
+			String insertQuery2 = String.format(insertTemplate, phones[1],names[1],families[1],ages[1]);
+			MysqlConnector.set(insertQuery2);
+		} catch (Exception e) {
+			isHasException = true;
+		}
+		if(!isHasException) {
+			throw new Exception("not null property doesn't attach to this column");
+		}
+	}
+	
+	@Test
+	public void testNotNullOfName() throws Exception {
+		String insertTemplate = "INSERT INTO users(telephone,password,family,age) VALUES('%s','%s','%s','%s')";
+		boolean isHasException = false;
+		try {
+			String insertQuery2 = String.format(insertTemplate, phones[1],passwords[1],families[1],ages[1]);
+			MysqlConnector.set(insertQuery2);
+		} catch (Exception e) {
+			isHasException = true;
+		}
+		if(!isHasException) {
+			throw new Exception("not null property doesn't attach to this column");
+		}
+	}
+	
+	@Test
+	public void testNotNullOfFamily() throws Exception {
+		String insertTemplate = "INSERT INTO users(telephone,password,name,age) VALUES('%s','%s','%s','%s')";
+		boolean isHasException = false;
+		try {
+			String insertQuery2 = String.format(insertTemplate, phones[1],passwords[0],names[1],ages[1]);
+			MysqlConnector.set(insertQuery2);
+		} catch (Exception e) {
+			isHasException = true;
+		}
+		if(!isHasException) {
+			throw new Exception("not null property doesn't attach to this column");
+		}
+	}
+	
+	@Test
+	public void testNotNullOfAge() throws Exception {
+		String insertTemplate = "INSERT INTO users(telephone,password,name,family) VALUES('%s','%s','%s','%s')";
+		boolean isHasException = false;
+		try {
+			String insertQuery2 = String.format(insertTemplate, phones[1],passwords[0],names[1],families[1]);
+			MysqlConnector.set(insertQuery2);
+		} catch (Exception e) {
+			isHasException = true;
+		}
+		if(!isHasException) {
+			throw new Exception("not null property doesn't attach to this column");
+		}
+	}
 }
