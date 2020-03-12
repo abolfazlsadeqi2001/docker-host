@@ -1,4 +1,4 @@
-package main.general.authentication;
+package main.general.authentication.models;
 
 public class Password {
 	private String password;

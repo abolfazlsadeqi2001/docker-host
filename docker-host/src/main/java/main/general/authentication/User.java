@@ -1,7 +1,6 @@
 package main.general.authentication;
 
 /**
- * TODO update test for new fields
  * each changes in this class must applied into
  * {@link main.general.authentication.AuthenticatorFront#register(String, String)} and
  * {@link main.general.authentication.AuthenticatorFront#login(String, String)} and test case in

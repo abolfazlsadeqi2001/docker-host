@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import main.general.database.mysql.MysqlConnector;
 
 public class MysqlConnectorTest {
-	// TODO check unique up
 	private final String[] phones = new String[] {"1111","2222"};
 	private final String[] passwords = new String[] {"aa11","bb22"};
 	private final String[] names = new String[] {"abolfazl","alis"};

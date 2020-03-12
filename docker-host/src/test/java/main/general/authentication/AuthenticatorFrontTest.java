@@ -3,6 +3,11 @@ package main.general.authentication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import main.general.authentication.models.Age;
+import main.general.authentication.models.Family;
+import main.general.authentication.models.Name;
+import main.general.authentication.models.Password;
+import main.general.authentication.models.Phone;
 import main.general.database.mysql.MysqlConnector;
 
 /**
