@@ -337,4 +337,26 @@ public class AuthenticatorFrontTest {
 		}
 	}
 	
+	@Test
+	public void testDontAddToCahceOnWrongLogin() throws Exception {
+		try {
+			AuthenticatorFront.login(validPhones[0].getNumber(), validPasswords[0].getPassword());
+		} catch (Exception e) {
+		} finally {
+			if(Authenticator.users.size() != 0)
+				throw new Exception("unknow user on database added to cache by login!");
+		}
+	}
+	
+	@Test
+	public void testDontAddToCahceOnInvalidPropertiesLogin() throws Exception {
+		try {
+			AuthenticatorFront.login(invalidPhones[0].getNumber(), validPasswords[0].getPassword());
+		} catch (Exception e) {
+		} finally {
+			if(Authenticator.users.size() != 0)
+				throw new Exception("unknow user on database added to cache by login!");
+		}
+	}
+	
 }

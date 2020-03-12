@@ -50,7 +50,6 @@ public class AuthenticatorFront {
 	 * any exception mean register process fail<br>
 	 * exception messages usually are written by myself that means they are can be used for give users some information
 	 * about why he cannot register or login
-	 * TODO write test
 	 * @param telephone
 	 * @param password
 	 * @return return an user if the process of saving doesn't have any exception
