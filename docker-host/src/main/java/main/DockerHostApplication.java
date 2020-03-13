@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class DockerHostApplication {
 
 	public static void main(String[] args) {
+		// run application
 		SpringApplication.run(DockerHostApplication.class, args);
 	}
 
