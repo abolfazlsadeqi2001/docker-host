@@ -7,7 +7,6 @@ import java.io.FileInputStream;
  * this class can read some properties like password,user name of database ,Kavenegar key etc
  * from a file then return each property
  * TODO write chanOfResponsibility
- * TODO write test<br>
  * you must write the .config file in your user home which will run the spring application<br>
  * The config file must look like the following syntax:<br>
  * user-name-on-database|password-on-database|<br>
@@ -16,11 +15,11 @@ import java.io.FileInputStream;
  * take care that all of the elements like password etc must finished by | otherwise the reader read it by an enter in end of that for example:<br>
  * root|1234 will read as user='root' and password='1234<br>'
  * @author abolfazlsadeqi2001
- *
+ * every changes must make test for {@link main.general.configs.reader.ConfigReaderTest}
  */
 public class ConfigReader {
 	private static String body = null;
-	private static final String CONFIGURE_FILE_PATH = System.getProperty("user.home")+"/.configs";
+	static final String CONFIGURE_FILE_PATH = System.getProperty("user.home")+"/.configs";
 	private static final String CONFIGURATION_SEPRATOR_PATTERN = "\\|";
 	private static final int INDEX_OF_DATABASE_USER_NAME = 0;
 	private static final int INDEX_OF_DATABASE_PASSWORD = 1;

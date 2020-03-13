@@ -13,7 +13,6 @@ import main.general.authentication.AuthenticatorFront;
 import main.general.authentication.models.User;
 
 /**
- * TODO write selenium test for html file
  * this class handle the login and register requests (just inputs from
  * /authentication)<br>
  * @author abolfazlsadeqi2001

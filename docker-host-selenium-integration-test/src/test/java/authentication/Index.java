@@ -62,6 +62,7 @@ public class Index extends SeleniumTestParent {
 		fillInput(telephone, "19397534791", errorInformMessage, "your pattern does allow a nubmer which start by 19", submitElement);
 		fillInput(telephone, "0939753479", errorInformMessage, "your pattern does allow a nubmer which hasn't enogh characters", submitElement);
 		fillInput(telephone, "093975347911", errorInformMessage, "your pattern allow a number which has a greator than length", submitElement);
+		fillInput(telephone, "mamadzoro12", "you have to see a telephone error","your pattern allowed the chars for telephone", submitElement);
 		fillInput(telephone, "09397534791", "you have not to see any telephone error","your pattern doesn't allow a validate number", submitElement);
 	}
 	
@@ -117,6 +118,7 @@ public class Index extends SeleniumTestParent {
 		fillInput(telephone, "19397534791", errorInformMessage, "your pattern does allow a nubmer which start by 19", submitElement);
 		fillInput(telephone, "0939753479", errorInformMessage, "your pattern does allow a nubmer which hasn't enogh characters", submitElement);
 		fillInput(telephone, "093975347911", errorInformMessage, "your pattern allow a number which has a greator than length", submitElement);
+		fillInput(telephone, "mamadzoro12", "you have to see a telephone error","your pattern allowed the chars for telephone", submitElement);
 		fillInput(telephone, "09397534791", "you have not to see any telephone error","your pattern doesn't allow a validate number", submitElement);
 	}
 	
