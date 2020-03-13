@@ -1,9 +1,12 @@
 package authentication;
 
+import static org.junit.Assert.fail;
+
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
@@ -82,6 +85,60 @@ public class Index extends SeleniumTestParent {
 		fillInput(password, "adadbxoro12", "you have not to see any password error", "pattern allowed only numberic password", submit);
 	}
 	
+	@Test
+	public void testAddCookieOnCorrectLogin() throws Exception {
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']")).sendKeys("09397534791");
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']")).sendKeys("mamadzoro12");
+		driver.findElement(By.cssSelector("form[name='login-form'] [type='submit']")).click();
+		
+		Thread.sleep(1000);
+		
+		boolean isHasCorrectValueForTelephoneCookie = false;
+		boolean isHasCorrectValueForPasswordCookie = false;
+		
+		Set<Cookie> cookies = driver.manage().getCookies();
+		for (Cookie cookie : cookies) {
+			if(cookie.getName().equals("telephone")) {
+				if(cookie.getValue().equals("09397534791")) {
+					isHasCorrectValueForTelephoneCookie = true;
+				}
+			}
+			
+			if(cookie.getName().equals("password")) {
+				if(cookie.getValue().equals("mamadzoro12")) {
+					isHasCorrectValueForPasswordCookie = true;
+				}
+			}
+		}
+		
+		if(!isHasCorrectValueForTelephoneCookie || !isHasCorrectValueForPasswordCookie)
+			fail("doesn't have correct value for telephone or password cookie");
+	}
+	
+	@Test
+	public void testAddCookieOnIncorrectLogin() {
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']")).sendKeys("0939753479");
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']")).sendKeys("mamadzoro12");
+		driver.findElement(By.cssSelector("form[name='login-form'] [type='submit']")).click();
+		
+		boolean isHasTelephoneCookie = false;
+		boolean isHasPasswordCookie = false;
+		
+		Set<Cookie> cookies = driver.manage().getCookies();
+		for (Cookie cookie : cookies) {
+			if(cookie.getName().equals("telephone")) {
+				isHasTelephoneCookie = true;
+			}
+			
+			if(cookie.getName().equals("password")) {
+				isHasPasswordCookie = true;
+			}
+		}
+		
+		if(isHasTelephoneCookie || isHasPasswordCookie)
+			fail("have telephone or password cookie");
+	}
+	
 	// register form and its content tests
 	@Test
 	public void testRegisterForm() {
@@ -133,6 +190,7 @@ public class Index extends SeleniumTestParent {
 		fillInput(name,"abolfazl","you have to see nothing about name","correct value doesn't allowed",submitElement);
 	}
 	
+	@Ignore
 	@Test
 	public void testAgeRegisterInputPattern() throws Exception {
 		WebElement age = driver.findElement(By.cssSelector("form[name='register-form'] [name='age']"));
@@ -153,6 +211,22 @@ public class Index extends SeleniumTestParent {
 		fillInput(family,"ab",errorInformationMessage,"less than 3 chars is accepted",submitElement);
 		fillInput(family,"abolfl123",errorInformationMessage,"more than 8 chars is accepted",submitElement);
 		fillInput(family,"abolfazl","you have to see nothing about family","correct value doesn't allowed",submitElement);
+	}
+	
+	@Test
+	public void testEmailRegisterPattern() throws Exception {
+		WebElement telephone = driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"));
+		WebElement password = driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"));
+		WebElement submit = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
+		String errorInformMessage = "you have to see a password error";
+		
+		// fill the telephone input by a validate nubmer which will help us to see the password errors
+		fillInput(telephone, "09397534791");
+		
+		fillInput(password, "12341234", errorInformMessage, "pattern allowed only numberic password", submit);
+		fillInput(password, "mamad1", errorInformMessage, "pattern allowed small length", submit);
+		fillInput(password, "mamadmamad", errorInformMessage, "pattern allowed only numberic password", submit);
+		fillInput(password, "adadbxoro1212", "you have not to see any password error", "pattern allowed only numberic password", submit);
 	}
 	
 	@Test
@@ -213,21 +287,5 @@ public class Index extends SeleniumTestParent {
 		
 		if(isHasTelephoneCookie || isHasPasswordCookie)
 			throw new Exception("have telephone or password cookie");
-	}
-	
-	@Test
-	public void testEmailRegisterPattern() throws Exception {
-		WebElement telephone = driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"));
-		WebElement password = driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"));
-		WebElement submit = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
-		String errorInformMessage = "you have to see a password error";
-		
-		// fill the telephone input by a validate nubmer which will help us to see the password errors
-		fillInput(telephone, "09397534791");
-		
-		fillInput(password, "12341234", errorInformMessage, "pattern allowed only numberic password", submit);
-		fillInput(password, "mamad1", errorInformMessage, "pattern allowed small length", submit);
-		fillInput(password, "mamadmamad", errorInformMessage, "pattern allowed only numberic password", submit);
-		fillInput(password, "adadbxoro1212", "you have not to see any password error", "pattern allowed only numberic password", submit);
 	}
 }
