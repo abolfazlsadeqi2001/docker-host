@@ -1,8 +1,12 @@
 package authentication;
 
+import java.util.Set;
+
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
 
 import general.SeleniumTestParent;
@@ -21,6 +25,12 @@ public class Index extends SeleniumTestParent {
 	public static void beforeAll() {
 		prepration(PATH_TO_HTML);
 	}
+	
+	@Before
+	public void beforeEach() {
+		driver.manage().deleteAllCookies();
+	}
+	
 	// login form and its content tests
 	@Test
 	public void testLoginForm() {
@@ -141,6 +151,66 @@ public class Index extends SeleniumTestParent {
 		fillInput(family,"ab",errorInformationMessage,"less than 3 chars is accepted",submitElement);
 		fillInput(family,"abolfl123",errorInformationMessage,"more than 8 chars is accepted",submitElement);
 		fillInput(family,"abolfazl","you have to see nothing about family","correct value doesn't allowed",submitElement);
+	}
+	
+	@Test
+	public void testAddCookieOnCorrectRegistration() throws Exception {
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']")).sendKeys("abolfazl");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='family']")).sendKeys("sadeqi");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='age']")).sendKeys("18");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']")).sendKeys("09397534791");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='password']")).sendKeys("mamadzoro12");
+		driver.findElement(By.cssSelector("form[name='register-form'] [type='submit']")).click();
+		
+		Thread.sleep(1000);
+		
+		boolean isHasCorrectValueForTelephoneCookie = false;
+		boolean isHasCorrectValueForPasswordCookie = false;
+		
+		Set<Cookie> cookies = driver.manage().getCookies();
+		for (Cookie cookie : cookies) {
+			if(cookie.getName().equals("telephone")) {
+				if(cookie.getValue().equals("09397534791")) {
+					isHasCorrectValueForTelephoneCookie = true;
+				}
+			}
+			
+			if(cookie.getName().equals("password")) {
+				if(cookie.getValue().equals("mamadzoro12")) {
+					isHasCorrectValueForPasswordCookie = true;
+				}
+			}
+		}
+		
+		if(!isHasCorrectValueForTelephoneCookie || !isHasCorrectValueForPasswordCookie)
+			throw new Exception("doesn't have correct value for telephone or password cookie");
+	}
+	
+	@Test
+	public void testAddCookieOnIncorrectRegistration() throws Exception {
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']")).sendKeys("abolfazl");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='family']")).sendKeys("sadeqi");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='age']")).sendKeys("18");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']")).sendKeys("0939753479");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='password']")).sendKeys("mamadzoro12");
+		driver.findElement(By.cssSelector("form[name='register-form'] [type='submit']")).click();
+		
+		boolean isHasTelephoneCookie = false;
+		boolean isHasPasswordCookie = false;
+		
+		Set<Cookie> cookies = driver.manage().getCookies();
+		for (Cookie cookie : cookies) {
+			if(cookie.getName().equals("telephone")) {
+				isHasTelephoneCookie = true;
+			}
+			
+			if(cookie.getName().equals("password")) {
+				isHasPasswordCookie = true;
+			}
+		}
+		
+		if(isHasTelephoneCookie || isHasPasswordCookie)
+			throw new Exception("have telephone or password cookie");
 	}
 	
 	@Test
