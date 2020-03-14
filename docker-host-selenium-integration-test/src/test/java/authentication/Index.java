@@ -272,18 +272,19 @@ public class Index extends SeleniumTestParent {
 				submitElement);
 	}
 
-	@Ignore
+	
 	@Test
 	public void testAgeRegisterInputPattern() throws Exception {
 		WebElement age = driver.findElement(By.cssSelector("form[name='register-form'] [name='age']"));
-		WebElement submitElement = driver
-				.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
-		String errorInformationMessage = "you have to see a name error";
-
-		fillInput(age, "72", errorInformationMessage, "less than 71 is accepted", submitElement);
-		fillInput(age, "6", errorInformationMessage, "less than 7 is accepted", submitElement);
-		fillInput(age, "18", "you have not to see anything error about age", "correct value doesn't allowed",
-				submitElement);
+		WebElement submit = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
+		// invalid names
+		for (Age age2 : invalidAges) {
+			fillInput(age, String.valueOf(age2.getAge()), "you have to see a age error", age2.getMessage(), submit);
+		}
+		// valid names
+		for (Age age2 : validAges) {
+			fillInput(age, String.valueOf(age2.getAge()), "you have not to see a age error", age2.getMessage(), submit);
+		}
 	}
 
 	@Ignore
@@ -305,7 +306,6 @@ public class Index extends SeleniumTestParent {
 		}
 	}
 
-	
 	@Test
 	public void testPasswordRegisterPattern() throws Exception {
 		WebElement password = driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"));
