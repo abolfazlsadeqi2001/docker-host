@@ -18,11 +18,14 @@ import general.SeleniumTestParent;
 
 /**
  * @author abolfazlsadeqi2001
- * @version 1.2.0
+ * @version 1.2.1
  * @see {@link general.SeleniumTestParent}
  */
 public class Index extends SeleniumTestParent {
 	private static final String PATH_TO_HTML = "/authentication";
+	// cookie section
+	private final String PASSWORD_COOKIE_NAME = "password";
+	private final String TELEPHONE_COOKIE_NAME = "telephone";
 	// phone section
 	Phone[] invalidPhones = new Phone[] {
 			new Phone("01397534791", "your pattern match a telephone nubmer that start by 01"),
@@ -43,12 +46,12 @@ public class Index extends SeleniumTestParent {
 	public static void beforeAll() {
 		prepration(PATH_TO_HTML);
 	}
-
+	// remove all cookies and database caches
 	@Before
 	public void beforeEach() {
 		driver.manage().deleteAllCookies();
 	}
-
+	// login
 	@Test
 	public void testLoginForm() {
 		driver.findElement(
@@ -103,11 +106,12 @@ public class Index extends SeleniumTestParent {
 				validPasswords[0].getMessage(), submit);
 	}
 
+	// TODO insert user to have a correct validation
 	@Ignore
 	@Test
 	public void testAddCookieOnCorrectLogin() throws Exception {
-		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']")).sendKeys("09397534791");
-		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']")).sendKeys("mamadzoro12");
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']")).sendKeys(validPhones[0].getNumber());
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']")).sendKeys(validPasswords[0].getPassword());
 		driver.findElement(By.cssSelector("form[name='login-form'] [type='submit']")).click();
 
 		Thread.sleep(1000);
@@ -117,14 +121,14 @@ public class Index extends SeleniumTestParent {
 
 		Set<Cookie> cookies = driver.manage().getCookies();
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("telephone")) {
-				if (cookie.getValue().equals("09397534791")) {
+			if (cookie.getName().equals(TELEPHONE_COOKIE_NAME)) {
+				if (cookie.getValue().equals(validPhones[0].getNumber())) {
 					isHasCorrectValueForTelephoneCookie = true;
 				}
 			}
 
-			if (cookie.getName().equals("password")) {
-				if (cookie.getValue().equals("mamadzoro12")) {
+			if (cookie.getName().equals(PASSWORD_COOKIE_NAME)) {
+				if (cookie.getValue().equals(validPasswords[0].getPassword())) {
 					isHasCorrectValueForPasswordCookie = true;
 				}
 			}
@@ -137,8 +141,8 @@ public class Index extends SeleniumTestParent {
 	@Ignore
 	@Test
 	public void testAddCookieOnIncorrectLogin() {
-		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']")).sendKeys("0939753479");
-		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']")).sendKeys("mamadzoro12");
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']")).sendKeys(invalidPhones[0].getNumber());
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']")).sendKeys(invalidPasswords[0].getPassword());
 		driver.findElement(By.cssSelector("form[name='login-form'] [type='submit']")).click();
 
 		boolean isHasTelephoneCookie = false;
@@ -146,11 +150,11 @@ public class Index extends SeleniumTestParent {
 
 		Set<Cookie> cookies = driver.manage().getCookies();
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("telephone")) {
+			if (cookie.getName().equals(TELEPHONE_COOKIE_NAME)) {
 				isHasTelephoneCookie = true;
 			}
 
-			if (cookie.getName().equals("password")) {
+			if (cookie.getName().equals(PASSWORD_COOKIE_NAME)) {
 				isHasPasswordCookie = true;
 			}
 		}
@@ -158,7 +162,7 @@ public class Index extends SeleniumTestParent {
 		if (isHasTelephoneCookie || isHasPasswordCookie)
 			fail("have telephone or password cookie");
 	}
-
+	// register
 	@Test
 	public void testRegisterForm() {
 		driver.findElement(
@@ -297,6 +301,7 @@ public class Index extends SeleniumTestParent {
 			throw new Exception("doesn't have correct value for telephone or password cookie");
 	}
 
+	// make two section one for invalid fields and invalid for such a phone number
 	@Ignore
 	@Test
 	public void testAddCookieOnIncorrectRegistration() throws Exception {
