@@ -124,8 +124,10 @@ public class Index extends SeleniumTestParent {
 					submitElement);
 		}
 		// correct phone
-		fillInput(telephone, validPhones[0].getNumber(), "you have not to see any telephone error",
-				"your pattern doesn't allow a validate number", submitElement);
+		for (Phone phone : validPhones) {
+			fillInput(telephone, phone.getNumber(), "you have not to see any telephone error",
+					"your pattern doesn't allow a validate number", submitElement);
+		}
 	}
 
 	@Ignore
@@ -139,14 +141,21 @@ public class Index extends SeleniumTestParent {
 					submit);
 		}
 		// correct password
-		fillInput(password, validPasswords[0].getPassword(), "you have not to see a password error",
-				validPasswords[0].getMessage(), submit);
+		for (Password password2 : validPasswords) {
+			fillInput(password, password2.getPassword(), "you have not to see a password error", password2.getMessage(),
+					submit);
+		}
 	}
 
-	// TODO insert user to have a correct validation
 	@Ignore
 	@Test
 	public void testAddCookieOnCorrectLogin() throws Exception {
+		String insertQueryTemplate = "INSERT INTO users(telephone,password,name,family,age) VALUES('%s','%s','%s','%s','%s')";
+		String insertQuery = String.format(insertQueryTemplate, validPhones[0].getNumber(),
+				validPasswords[0].getPassword(), validNames[0].getName(), validFamilies[0].getFamily(),
+				validAges[0].getAge());
+		MysqlConnector.set(insertQuery);
+
 		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']"))
 				.sendKeys(validPhones[0].getNumber());
 		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']"))
@@ -290,11 +299,13 @@ public class Index extends SeleniumTestParent {
 					submitElement);
 		}
 		// correct phone
-		fillInput(telephone, validPhones[0].getNumber(), "you have not to see any telephone error",
-				"your pattern doesn't allow a validate number", submitElement);
+		for (Phone phone : validPhones) {
+			fillInput(telephone, phone.getNumber(), "you have not to see any telephone error",
+					"your pattern doesn't allow a validate number", submitElement);
+		}
 	}
 
-	@Ignore
+	
 	@Test
 	public void testPasswordRegisterPattern() throws Exception {
 		WebElement password = driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"));
@@ -305,18 +316,25 @@ public class Index extends SeleniumTestParent {
 					submit);
 		}
 		// correct password
-		fillInput(password, validPasswords[0].getPassword(), "you have not to see a password error",
-				validPasswords[0].getMessage(), submit);
+		for (Password password2 : validPasswords) {
+			fillInput(password, password2.getPassword(), "you have not to see a password error", password2.getMessage(),
+					submit);
+		}
 	}
 
 	@Ignore
 	@Test
 	public void testAddCookieOnCorrectRegistration() throws Exception {
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']")).sendKeys("abolfazl");
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='family']")).sendKeys("sadeqi");
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='age']")).sendKeys("18");
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']")).sendKeys("09397534791");
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='password']")).sendKeys("mamadzoro12");
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']"))
+				.sendKeys(validNames[0].getName());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='family']"))
+				.sendKeys(validFamilies[0].getFamily());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='age']"))
+				.sendKeys(String.valueOf(validAges[0].getAge()));
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"))
+				.sendKeys(validPhones[0].getNumber());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"))
+				.sendKeys(validPasswords[0].getPassword());
 		driver.findElement(By.cssSelector("form[name='register-form'] [type='submit']")).click();
 
 		Thread.sleep(1000);
@@ -326,14 +344,14 @@ public class Index extends SeleniumTestParent {
 
 		Set<Cookie> cookies = driver.manage().getCookies();
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("telephone")) {
-				if (cookie.getValue().equals("09397534791")) {
+			if (cookie.getName().equals(TELEPHONE_COOKIE_NAME)) {
+				if (cookie.getValue().equals(validPhones[0].getNumber())) {
 					isHasCorrectValueForTelephoneCookie = true;
 				}
 			}
 
-			if (cookie.getName().equals("password")) {
-				if (cookie.getValue().equals("mamadzoro12")) {
+			if (cookie.getName().equals(PASSWORD_COOKIE_NAME)) {
+				if (cookie.getValue().equals(validPasswords[0].getPassword())) {
 					isHasCorrectValueForPasswordCookie = true;
 				}
 			}
@@ -346,12 +364,17 @@ public class Index extends SeleniumTestParent {
 	// make two section one for invalid fields and invalid for such a phone number
 	@Ignore
 	@Test
-	public void testAddCookieOnIncorrectRegistration() throws Exception {
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']")).sendKeys("abolfazl");
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='family']")).sendKeys("sadeqi");
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='age']")).sendKeys("18");
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']")).sendKeys("0939753479");
-		driver.findElement(By.cssSelector("form[name='register-form'] [name='password']")).sendKeys("mamadzoro12");
+	public void testAddCookieOnIncorrectRegistrationField() throws Exception {
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']"))
+				.sendKeys(invalidNames[0].getName());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='family']"))
+				.sendKeys(validFamilies[0].getFamily());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='age']"))
+				.sendKeys(String.valueOf(validAges[0].getAge()));
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"))
+				.sendKeys(validPhones[0].getNumber());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"))
+				.sendKeys(validPasswords[0].getPassword());
 		driver.findElement(By.cssSelector("form[name='register-form'] [type='submit']")).click();
 
 		boolean isHasTelephoneCookie = false;
@@ -359,11 +382,50 @@ public class Index extends SeleniumTestParent {
 
 		Set<Cookie> cookies = driver.manage().getCookies();
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("telephone")) {
+			if (cookie.getName().equals(TELEPHONE_COOKIE_NAME)) {
 				isHasTelephoneCookie = true;
 			}
 
-			if (cookie.getName().equals("password")) {
+			if (cookie.getName().equals(PASSWORD_COOKIE_NAME)) {
+				isHasPasswordCookie = true;
+			}
+		}
+
+		if (isHasTelephoneCookie || isHasPasswordCookie)
+			throw new Exception("have telephone or password cookie");
+	}
+
+	@Ignore
+	@Test
+	public void testAddCookieOnIncorrectRegistrationRepeatedTelephone() throws Exception {
+		String insertQueryTemplate = "INSERT INTO users(telephone,password,name,family,age) VALUES('%s','%s','%s','%s','%s')";
+		String insertQuery = String.format(insertQueryTemplate, validPhones[0].getNumber(),
+				validPasswords[0].getPassword(), validNames[0].getName(), validFamilies[0].getFamily(),
+				validAges[0].getAge());
+		MysqlConnector.set(insertQuery);
+
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']"))
+				.sendKeys(validNames[0].getName());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='family']"))
+				.sendKeys(validFamilies[0].getFamily());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='age']"))
+				.sendKeys(String.valueOf(validAges[0].getAge()));
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"))
+				.sendKeys(validPhones[0].getNumber());
+		driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"))
+				.sendKeys(validPasswords[0].getPassword());
+		driver.findElement(By.cssSelector("form[name='register-form'] [type='submit']")).click();
+
+		boolean isHasTelephoneCookie = false;
+		boolean isHasPasswordCookie = false;
+
+		Set<Cookie> cookies = driver.manage().getCookies();
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals(TELEPHONE_COOKIE_NAME)) {
+				isHasTelephoneCookie = true;
+			}
+
+			if (cookie.getName().equals(PASSWORD_COOKIE_NAME)) {
 				isHasPasswordCookie = true;
 			}
 		}

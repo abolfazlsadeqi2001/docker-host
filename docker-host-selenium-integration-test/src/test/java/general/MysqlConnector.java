@@ -8,7 +8,6 @@ import java.sql.Statement;
 import general.ConfigReader;
 
 public class MysqlConnector {
-	// TODO implements chain of responsibility to handle the connection exception
 	// then throw a exception by a better message
 	private static final String DATA_BASE_ADDRESS = "jdbc:mysql://localhost:3306/dockerhost";
 	private static final String USER = ConfigReader.getDatabaseUserName();

@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 /**
  * this class can read some properties like password,user name of database ,Kavenegar key etc
  * from a file then return each property
- * TODO write chanOfResponsibility
  * you must write the .config file in your user home which will run the spring application<br>
  * The config file must look like the following syntax:<br>
  * user-name-on-database|password-on-database|<br>
