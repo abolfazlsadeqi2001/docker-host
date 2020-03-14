@@ -13,6 +13,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
 
+import authentication.models.Age;
+import authentication.models.Family;
+import authentication.models.Name;
 import authentication.models.Password;
 import authentication.models.Phone;
 import general.MysqlConnector;
@@ -42,12 +45,28 @@ public class Index extends SeleniumTestParent {
 			new Password("mamadmamad", "pattern allowed only chars password"),
 			new Password("adadbxorodsfsf12121", "pattern allowed long length password") };
 	Password[] validPasswords = new Password[] { new Password("adadbxoro12", "correct") };
+	// name section
+	Name[] invalidNames = new Name[] { new Name("ab", "too short"), new Name("a1", "too short"),
+			new Name("15", "too short"), new Name("ababababa", "too long"), new Name("abafafab1", "too long"),
+			new Name("123456789", "too long") };
+	Name[] validNames = new Name[] { new Name("123"), new Name("a1b"), new Name("abs"), new Name("abolfaz1"),
+			new Name("12345678"), new Name("abolfazl") };
+	// family section
+	Family[] invalidFamilies = new Family[] { new Family("ab", "too short"), new Family("a1", "too short"),
+			new Family("15", "too short"), new Family("ababababa", "too long"), new Family("abafafab1", "too long"),
+			new Family("123456789", "too long") };
+	Family[] validFamilies = new Family[] { new Family("123"), new Family("a1b"), new Family("abs"),
+			new Family("abolfaz1"), new Family("12345678"), new Family("abolfazl") };
+	// age section
+	Age[] invalidAges = new Age[] { new Age(6), new Age(72) };
+	Age[] validAges = new Age[] { new Age(7), new Age(71), new Age(18), new Age(10), new Age(42) };
 
 	// setup the address to test
 	@BeforeClass
 	public static void beforeAll() {
 		prepration(PATH_TO_HTML);
 	}
+
 	// remove all cookies and database caches
 	@Before
 	public void beforeEach() throws Exception {
@@ -62,12 +81,13 @@ public class Index extends SeleniumTestParent {
 			MysqlConnector.set(String.format(deleteQueryTemplate, phone.getNumber()));
 		}
 	}
-	
+
 	// do everything in beforeEach method
 	@After
 	public void afterEach() throws Exception {
 		beforeEach();
 	}
+
 	// login
 	@Test
 	public void testLoginForm() {
@@ -127,8 +147,10 @@ public class Index extends SeleniumTestParent {
 	@Ignore
 	@Test
 	public void testAddCookieOnCorrectLogin() throws Exception {
-		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']")).sendKeys(validPhones[0].getNumber());
-		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']")).sendKeys(validPasswords[0].getPassword());
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']"))
+				.sendKeys(validPhones[0].getNumber());
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']"))
+				.sendKeys(validPasswords[0].getPassword());
 		driver.findElement(By.cssSelector("form[name='login-form'] [type='submit']")).click();
 
 		Thread.sleep(1000);
@@ -158,8 +180,10 @@ public class Index extends SeleniumTestParent {
 	@Ignore
 	@Test
 	public void testAddCookieOnIncorrectLogin() {
-		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']")).sendKeys(invalidPhones[0].getNumber());
-		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']")).sendKeys(invalidPasswords[0].getPassword());
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']"))
+				.sendKeys(invalidPhones[0].getNumber());
+		driver.findElement(By.cssSelector("form[name='login-form'] [name='password']"))
+				.sendKeys(invalidPasswords[0].getPassword());
 		driver.findElement(By.cssSelector("form[name='login-form'] [type='submit']")).click();
 
 		boolean isHasTelephoneCookie = false;
@@ -179,6 +203,7 @@ public class Index extends SeleniumTestParent {
 		if (isHasTelephoneCookie || isHasPasswordCookie)
 			fail("have telephone or password cookie");
 	}
+
 	// register
 	@Test
 	public void testRegisterForm() {
@@ -268,7 +293,7 @@ public class Index extends SeleniumTestParent {
 		fillInput(telephone, validPhones[0].getNumber(), "you have not to see any telephone error",
 				"your pattern doesn't allow a validate number", submitElement);
 	}
-	
+
 	@Ignore
 	@Test
 	public void testPasswordRegisterPattern() throws Exception {
