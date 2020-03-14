@@ -262,26 +262,27 @@ public class Index extends SeleniumTestParent {
 	@Test
 	public void testFamilyRegisterInputPattern() throws Exception {
 		WebElement family = driver.findElement(By.cssSelector("form[name='register-form'] [name='family']"));
-		WebElement submitElement = driver
+		WebElement submit = driver
 				.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
-		String errorInformationMessage = "you have to see a family error";
-
-		fillInput(family, "ab", errorInformationMessage, "less than 3 chars is accepted", submitElement);
-		fillInput(family, "abolfl123", errorInformationMessage, "more than 8 chars is accepted", submitElement);
-		fillInput(family, "abolfazl", "you have to see nothing about family", "correct value doesn't allowed",
-				submitElement);
+		// invalid names
+		for (Family familyObject : invalidFamilies) {
+			fillInput(family, familyObject.getFamily(), "you have to see a age error", familyObject.getMessage(), submit);
+		}
+		// valid names
+		for (Family family2 : validFamilies) {
+			fillInput(family, family2.getFamily(), "you have not to see a age error", family2.getMessage(), submit);
+		}
 	}
 
-	
 	@Test
 	public void testAgeRegisterInputPattern() throws Exception {
 		WebElement age = driver.findElement(By.cssSelector("form[name='register-form'] [name='age']"));
 		WebElement submit = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
-		// invalid names
+		// invalid ages
 		for (Age age2 : invalidAges) {
 			fillInput(age, String.valueOf(age2.getAge()), "you have to see a age error", age2.getMessage(), submit);
 		}
-		// valid names
+		// valid ages
 		for (Age age2 : validAges) {
 			fillInput(age, String.valueOf(age2.getAge()), "you have not to see a age error", age2.getMessage(), submit);
 		}
