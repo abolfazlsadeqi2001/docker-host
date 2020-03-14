@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -14,6 +15,7 @@ import org.openqa.selenium.WebElement;
 
 import authentication.models.Password;
 import authentication.models.Phone;
+import general.MysqlConnector;
 import general.SeleniumTestParent;
 
 /**
@@ -48,8 +50,23 @@ public class Index extends SeleniumTestParent {
 	}
 	// remove all cookies and database caches
 	@Before
-	public void beforeEach() {
+	public void beforeEach() throws Exception {
+		// clear cookies
 		driver.manage().deleteAllCookies();
+		// remove all phones from database
+		String deleteQueryTemplate = "DELETE FROM users WHERE telephone='%s'";
+		for (Phone phone : invalidPhones) {
+			MysqlConnector.set(String.format(deleteQueryTemplate, phone.getNumber()));
+		}
+		for (Phone phone : validPhones) {
+			MysqlConnector.set(String.format(deleteQueryTemplate, phone.getNumber()));
+		}
+	}
+	
+	// do everything in beforeEach method
+	@After
+	public void afterEach() throws Exception {
+		beforeEach();
 	}
 	// login
 	@Test
