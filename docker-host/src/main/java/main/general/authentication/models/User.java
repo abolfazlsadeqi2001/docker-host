@@ -1,5 +1,7 @@
 package main.general.authentication.models;
 
+import main.general.authentication.Authenticator;
+
 /**
  * each changes in this class must applied into
  * {@link main.general.authentication.AuthenticatorFront#register(String, String)} and
@@ -17,6 +19,7 @@ public class User {
 	private String family;
 	private int user_id;
 	private int age;
+	private int money;
 	
 	public User() {
 		telephone = "";
@@ -24,6 +27,28 @@ public class User {
 		exceptionMessage = "";
 		family = "";
 		name = "";
+	}
+	
+	// TODO write test that the cache memory and database has a correct value
+	public void addMoney(int cost) throws Exception {
+		money += cost;
+		try {
+			// set money on cache memory
+			User user = this;
+			Authenticator.getUserByTelephoneAndPasswordFromCache(user).setMoney(money);
+			// set money on database
+			Authenticator.updateMoney(user);
+		} catch (Exception e) {
+			throw new Exception("unknown user!I can't add money because of "+e.getMessage());
+		}
+	}
+	
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
 	}
 	
 	public int getAge() {

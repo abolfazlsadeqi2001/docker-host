@@ -192,7 +192,7 @@ public class Authenticator {
 	 * @return an user object if exists that user by same telephone and password
 	 *         otherwise return null
 	 */
-	static User getUserByTelephoneAndPasswordFromCache(User user) {
+	public static User getUserByTelephoneAndPasswordFromCache(User user) {
 		for (UserCache userCache : users) {
 			User currentUser = userCache.getUser();
 			if (currentUser.equalsByTelephoneAndPassword(user)) {
@@ -272,6 +272,19 @@ public class Authenticator {
 	static void insertNewUser(User user) throws Exception {
 		String queryTemplate = "INSERT INTO users(telephone,password,name,family,age) VALUES('%s','%s','%s','%s','%s')";
 		String query = String.format(queryTemplate, user.getTelephone(), user.getPassword(),user.getName(),user.getFamily(),user.getAge());
+		MysqlConnector.set(query);
+	}
+	
+	// TODO write test
+	// TODO check differences in git log (to write all TODOS)
+	/**
+	 * get an user object use it phone to update the money by its money
+	 * @param user
+	 * @throws Exception
+	 */
+	public static void updateMoney(User user) throws Exception {
+		String queryTemplate = "UPDATE users SET money='%s' WHERE telephone='%s'";
+		String query = String.format(queryTemplate, user.getMoney(), user.getTelephone());
 		MysqlConnector.set(query);
 	}
 }

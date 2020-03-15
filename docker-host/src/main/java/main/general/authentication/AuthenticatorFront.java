@@ -15,6 +15,7 @@ public class AuthenticatorFront {
 	 * @return
 	 * @throws Exception
 	 */
+	// TODO check to have all fields with correct value in both cache and database
 	public static User login(String telephone, String password) throws Exception {
 		User user = new User();
 		// set user fields to validate from cache or database
@@ -30,6 +31,7 @@ public class AuthenticatorFront {
 			user.setName(cachedUser.getName());
 			user.setFamily(cachedUser.getFamily());
 			user.setAge(cachedUser.getAge());
+			user.setMoney(cachedUser.getMoney());
 		}else {// get whole user datas using result set from database then close it and add the user to cache memory
 			ResultSet set = Authenticator.getByTelephoneAndPasswordFromDatabase(user);
 			
@@ -37,6 +39,7 @@ public class AuthenticatorFront {
 			user.setName(set.getString("name"));
 			user.setFamily(set.getString("family"));
 			user.setAge(set.getInt("age"));
+			user.setMoney(set.getInt("money"));
 			
 			Authenticator.attachToCache(user);
 			set.close();
@@ -55,6 +58,7 @@ public class AuthenticatorFront {
 	 * @return return an user if the process of saving doesn't have any exception
 	 * @throws Exception exceptions in process of saving to database
 	 */
+	// TODO check to have all fields by correct value money = 0
 	public static User register(String telephone, String password,String name,String family,int age) throws Exception {
 		User user = new User();
 		// set user fields to validate from cache or database
