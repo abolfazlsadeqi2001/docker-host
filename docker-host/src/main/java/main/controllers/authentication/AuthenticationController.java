@@ -13,6 +13,9 @@ import main.general.authentication.AuthenticatorFront;
 import main.general.authentication.models.User;
 
 /**
+ * TODO set cookies life time
+ * TODO add placehocler for each field
+ * TODO add user money
  * this class handle the login and register requests (just inputs from
  * /authentication)<br>
  * @author abolfazlsadeqi2001
@@ -23,6 +26,8 @@ import main.general.authentication.models.User;
 @Controller
 public class AuthenticationController {
 
+	// TODO check that each part of authentication system throw an exception by correct message
+	// TODO write test to that the div error container must be empty
 	@RequestMapping("/authentication")
 	public String authentication(Model model) {
 		User user = new User();
@@ -35,10 +40,9 @@ public class AuthenticationController {
 			@RequestParam(defaultValue = "nothing", name = "password") String password,
 			HttpServletResponse res,
 			Model model) {
-		User user = new User();
-		model.addAttribute(user);
 		try {
-			AuthenticatorFront.login(telephone, password);
+			User user = AuthenticatorFront.login(telephone, password);
+			model.addAttribute(user);
 			// save cookies
 			Cookie telephoneCookie = new Cookie("telephone",telephone);
 			Cookie passwordCookie = new Cookie("password",password);
@@ -47,7 +51,9 @@ public class AuthenticationController {
 			// go to user panel
 			return "/user-panel";
 		} catch (Exception e) {
+			User user = new User();
 			user.setExceptionMessage(e.getMessage());
+			model.addAttribute(user);
 			return "/authentication";
 		}
 	}
