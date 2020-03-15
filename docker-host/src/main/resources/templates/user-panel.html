@@ -28,5 +28,14 @@
 				<span>$</span>
 			</div>
 		</nav>
+		<!-- main section -->
+		<main>
+			<form>
+				<input type="hidden" name="telephone" th:value="${user.telephone}" />
+				<input type="hidden" name="password" th:value="${user.password}" />
+				<input type="hidden" name="cost" value="1000" />
+				<input type="submit" value="add 1000$" formaction="/charge" formmethod="POST" />
+			</form>
+		</main>
 	</body>
 </html>
