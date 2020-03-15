@@ -1,5 +1,7 @@
 package main.general.authentication;
 
+import static org.assertj.core.api.Assertions.fail;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -184,14 +186,14 @@ public class AuthenticatorFrontTest {
 		
 		User gottenUser = AuthenticatorFront.login(validPhones[0].getNumber(), validPasswords[0].getPassword());
 		if(Authenticator.users.size() != 1) {
-			System.out.println("users cahce set doesn't equals 1");
+			fail("users cahce set doesn't equals 1");
 		}
 		if(!Authenticator.users.iterator().next().getUser().equalsByTelephoneAndPassword(user)) {
-			System.out.println("the first cached user element doesn't has match telephone and password");
+			fail("the first cached user element doesn't has match telephone and password");
 		}
 		
 		if(!gottenUser.equalsByTelephoneAndPassword(user)) {
-			System.out.println("the gotten doesn't has match telephone and password");
+			fail("the gotten doesn't has match telephone and password");
 		}
 	}
 	
@@ -252,7 +254,7 @@ public class AuthenticatorFrontTest {
 		try { 
 			AuthenticatorFront.register(validPhones[0].getNumber(), validPasswords[0].getPassword(),validNames[0].getName(),validFamilies[0].getFamily(),validAges[0].getAge());
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			fail(e.getMessage());
 			if(e.getMessage().contains("phone")) {
 				throw new Exception("with valid phone show a phone error");
 			}
