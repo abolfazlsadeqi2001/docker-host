@@ -276,7 +276,6 @@ public class Authenticator {
 	}
 	
 	// TODO write test
-	// TODO check differences in git log (to write all TODOS)
 	/**
 	 * get an user object use it phone to update the money by its money
 	 * @param user
