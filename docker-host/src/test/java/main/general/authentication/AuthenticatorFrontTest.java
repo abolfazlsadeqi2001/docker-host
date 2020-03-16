@@ -125,7 +125,7 @@ public class AuthenticatorFrontTest {
 	@Test
 	public void testLoginToUseAnExistenceCache() throws Exception {
 		User user = new User();
-		user.setUserId(1);
+		user.setId(1);
 		user.setTelephone(validPhones[0].getNumber());
 		user.setPassword(validPasswords[0].getPassword());
 		user.setName(validNames[0].getName());
@@ -231,7 +231,7 @@ public class AuthenticatorFrontTest {
 		
 		AuthenticatorFront.register(user.getTelephone(), user.getPassword(),user.getName(),user.getFamily(),user.getAge());
 		User gotUser = Authenticator.getUserByTelephoneAndPasswordFromCache(user);
-		user.setUserId(gotUser.getUserId());// Id generated into database so it is essential to set user id for equals method
+		user.setId(gotUser.getId());// Id generated into database so it is essential to set user id for equals method
 		if(!gotUser.equals(user)) {
 			throw new Exception("the gotten user wasn't equals.what the hell was that man");
 		}

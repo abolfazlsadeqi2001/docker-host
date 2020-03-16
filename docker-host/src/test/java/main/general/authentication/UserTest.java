@@ -34,12 +34,12 @@ public class UserTest {
 		User user1 = new User();
 		user1.setTelephone(phones[0]);
 		user1.setPassword(passwords[0]);
-		user1.setUserId(1);
+		user1.setId(1);
 
 		User user2 = new User();
 		user2.setTelephone(phones[0]);
 		user2.setPassword(passwords[0]);
-		user2.setUserId(2);
+		user2.setId(2);
 
 		if (!user1.equalsByTelephoneAndPassword(user2))
 			throw new Exception("same users passwrod and telephone don't equal!");
@@ -47,7 +47,7 @@ public class UserTest {
 		if (user1.equals(user2))
 			throw new Exception("different ids equal!");
 
-		user1.setUserId(2);
+		user1.setId(2);
 		if (!user1.equals(user2))
 			throw new Exception("same users don't equal");
 	}

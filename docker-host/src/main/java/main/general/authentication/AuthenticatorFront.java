@@ -27,7 +27,7 @@ public class AuthenticatorFront {
 		 */
 		User cachedUser = Authenticator.getUserByTelephoneAndPasswordFromCache(user);
 		if(cachedUser != null) {
-			user.setUserId(cachedUser.getUserId());
+			user.setId(cachedUser.getId());
 			user.setName(cachedUser.getName());
 			user.setFamily(cachedUser.getFamily());
 			user.setAge(cachedUser.getAge());
@@ -35,7 +35,7 @@ public class AuthenticatorFront {
 		}else {// get whole user datas using result set from database then close it and add the user to cache memory
 			ResultSet set = Authenticator.getByTelephoneAndPasswordFromDatabase(user);
 			
-			user.setUserId(set.getInt("id"));
+			user.setId(set.getInt("id"));
 			user.setName(set.getString("name"));
 			user.setFamily(set.getString("family"));
 			user.setAge(set.getInt("age"));
@@ -74,7 +74,7 @@ public class AuthenticatorFront {
 		Authenticator.insertNewUser(user);
 		// get user datas on database (just id)
 		ResultSet set = Authenticator.getByTelephoneAndPasswordFromDatabase(user);
-		user.setUserId(set.getInt("id"));
+		user.setId(set.getInt("id"));
 		// attach new user to cache and return it
 		Authenticator.attachToCache(user);
 		set.close();

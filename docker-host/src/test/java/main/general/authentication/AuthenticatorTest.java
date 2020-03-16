@@ -434,14 +434,14 @@ public class AuthenticatorTest {
 	@Test
 	public void testGetUserByTelephoneAndPasswordFromCache() throws Exception {
 		User user1 = new User();
-		user1.setUserId(1);
+		user1.setId(1);
 		user1.setPassword("mamad");
 		user1.setTelephone("091");
 		Authenticator.attachToCache(user1);
 		user1.setPassword("alil");
 
 		User user2 = new User();
-		user2.setUserId(2);
+		user2.setId(2);
 		user2.setPassword("ali");
 		user2.setTelephone("092");
 		Authenticator.attachToCache(user2);

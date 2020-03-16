@@ -84,11 +84,11 @@ public class User {
 		this.exceptionMessage = exceptionMessage;
 	}
 
-	public int getUserId() {
+	public int getId() {
 		return user_id;
 	}
 
-	public void setUserId(int id) {
+	public void setId(int id) {
 		this.user_id = id;
 	}
 
@@ -126,7 +126,7 @@ public class User {
 			return false;
 		User user = (User) obj;
 		
-		if(user.getUserId() != getUserId())
+		if(user.getId() != getId())
 			return false;
 		if(user.getAge() != getAge())
 			return false;
@@ -143,7 +143,7 @@ public class User {
 		String body = "";
 		
 		body += "exception:"+getExceptionMessage()+"|";
-		body += "id:"+getUserId()+"|";
+		body += "id:"+getId()+"|";
 		body += "telephone:"+getTelephone()+"|";
 		body += "password:"+getPassword()+"|";
 		body += "name:"+getName()+"|";
