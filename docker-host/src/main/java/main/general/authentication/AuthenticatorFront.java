@@ -15,7 +15,6 @@ public class AuthenticatorFront {
 	 * @return
 	 * @throws Exception
 	 */
-	// TODO check to have all fields with correct value in both cache and database
 	public static User login(String telephone, String password) throws Exception {
 		User user = new User();
 		// set user fields to validate from cache or database

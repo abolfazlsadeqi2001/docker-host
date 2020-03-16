@@ -128,11 +128,15 @@ public class User {
 		
 		if(user.getId() != getId())
 			return false;
-		if(user.getAge() != getAge())
+		if(!user.getName().equals(getName()))
 			return false;
 		if(!user.getFamily().equals(getFamily()))
 			return false;
-		if(!user.getName().equals(getName()))
+		if(user.getAge() != getAge())
+			return false;
+		if(user.getMoney() != getMoney())
+			return false;
+		if(!user.getExceptionMessage().equals(getExceptionMessage()))
 			return false;
 
 		return equalsByTelephoneAndPassword(user);
