@@ -237,9 +237,11 @@ public class Authenticator {
 		ResultSet set = MysqlConnector.get(query);
 
 		if (set.next()) {
+			set.close();
 			return true;
 		}
 		// if in set doesn't any phone match return false
+		set.close();
 		return false;
 	}
 
