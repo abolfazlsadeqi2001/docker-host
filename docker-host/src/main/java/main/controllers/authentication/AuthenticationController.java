@@ -13,7 +13,6 @@ import main.general.authentication.AuthenticatorFront;
 import main.general.authentication.models.User;
 
 /**
- * TODO set cookies life time
  * TODO write test for place holder
  * this class handle the login and register requests (just inputs from
  * /authentication)<br>
@@ -24,7 +23,9 @@ import main.general.authentication.models.User;
  */
 @Controller
 public class AuthenticationController {
-
+	
+	private final int EXPIRE_TIME_PER_SECONDS = 3 * 24 * 60;
+	
 	// TODO write test to that the div error container must be empty
 	@RequestMapping("/authentication")
 	public String authentication(Model model) {
@@ -44,6 +45,8 @@ public class AuthenticationController {
 			// save cookies
 			Cookie telephoneCookie = new Cookie("telephone",telephone);
 			Cookie passwordCookie = new Cookie("password",password);
+			telephoneCookie.setMaxAge(EXPIRE_TIME_PER_SECONDS);
+			passwordCookie.setMaxAge(EXPIRE_TIME_PER_SECONDS);
 			res.addCookie(telephoneCookie);
 			res.addCookie(passwordCookie);
 			// go to user panel
@@ -69,6 +72,8 @@ public class AuthenticationController {
 			// save cookies
 			Cookie telephoneCookie = new Cookie("telephone",telephone);
 			Cookie passwordCookie = new Cookie("password",password);
+			telephoneCookie.setMaxAge(EXPIRE_TIME_PER_SECONDS);
+			passwordCookie.setMaxAge(EXPIRE_TIME_PER_SECONDS);
 			res.addCookie(telephoneCookie);
 			res.addCookie(passwordCookie);
 			// setup model then go to user panel
