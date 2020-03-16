@@ -7,7 +7,7 @@ import main.general.authentication.Authenticator;
  * {@link main.general.authentication.AuthenticatorFront#register(String, String)} and
  * {@link main.general.authentication.AuthenticatorFront#login(String, String)} and test case in
  * {@link main.general.authentication.UserTest} also in
- * {@link main.general.authentication.models.User#toString()}
+ * {@link main.general.authentication.models.User#toString()} and their tests
  * @author abolfazlsadeqi2001
  *
  */
@@ -30,6 +30,7 @@ public class User {
 	}
 	
 	// TODO write test that the cache memory and database has a correct value
+	// placed it into Authenticator
 	public void addMoney(int cost) throws Exception {
 		money += cost;
 		try {

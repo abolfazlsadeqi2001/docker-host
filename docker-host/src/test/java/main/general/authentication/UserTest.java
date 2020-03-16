@@ -120,7 +120,8 @@ public class UserTest {
 		if (!user1.equals(user2))
 			throw new Exception("same users don't equal");
 	}
-
+	
+	// TODO write test for other fields like money
 	/**
 	 * some of user fields must not equals to null like strings
 	 * @throws Exception

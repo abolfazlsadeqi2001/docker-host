@@ -58,7 +58,6 @@ public class AuthenticatorFront {
 	 * @return return an user if the process of saving doesn't have any exception
 	 * @throws Exception exceptions in process of saving to database
 	 */
-	// TODO check to have all fields by correct value money = 0
 	public static User register(String telephone, String password,String name,String family,int age) throws Exception {
 		User user = new User();
 		// set user fields to validate from cache or database

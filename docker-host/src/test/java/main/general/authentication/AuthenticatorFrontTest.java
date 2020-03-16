@@ -227,10 +227,12 @@ public class AuthenticatorFrontTest {
 		user.setName(validNames[0].getName());
 		user.setFamily(validFamilies[0].getFamily());
 		user.setAge(validAges[0].getAge());
+		user.setMoney(0);
 		
 		AuthenticatorFront.register(user.getTelephone(), user.getPassword(),user.getName(),user.getFamily(),user.getAge());
 		User gotUser = Authenticator.getUserByTelephoneAndPasswordFromCache(user);
-		if(!gotUser.equalsByTelephoneAndPassword(user)) {// don't use equal because id generated in database
+		user.setUserId(gotUser.getUserId());// Id generated into database so it is essential to set user id for equals method
+		if(!gotUser.equals(user)) {
 			throw new Exception("the gotten user wasn't equals.what the hell was that man");
 		}
 	}
