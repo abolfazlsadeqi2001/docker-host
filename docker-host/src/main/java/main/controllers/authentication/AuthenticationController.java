@@ -14,8 +14,7 @@ import main.general.authentication.models.User;
 
 /**
  * TODO set cookies life time
- * TODO add placehocler for each field
- * TODO add user money
+ * TODO write test for place holder
  * this class handle the login and register requests (just inputs from
  * /authentication)<br>
  * @author abolfazlsadeqi2001

@@ -19,11 +19,11 @@
 			<legend>Login</legend>
 			<label for="telephone">telephone number:</label>
 			<br>
-			<input type="text" name="telephone" id="telephone" required="required" pattern="09[0-9]{9}" title="telephone number must start with 09(Iranina mobile)" />
+			<input type="text" name="telephone" id="telephone" placeholder="telephone" required="required" pattern="09[0-9]{9}" title="telephone number must start with 09(Iranina mobile)" />
 			<br>
 			<label for="password">password:</label> 
 			<br> 
-			<input type="password" name="password" id="password" required="required" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$" title="password must include numbers and chars" /> 
+			<input type="password" name="password" id="password" placeholder="password" required="required" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$" title="password must include numbers and chars" /> 
 			<br>
 			<input type="submit" value="login" />
 		</fieldset>
@@ -34,23 +34,23 @@
 			<legend>Register</legend>
 			<label for="name">name: </label>
 			<br>
-			<input type="text" name="name" id="name" required="required" pattern="[a-zA-Z0-9]{3,8}" title="just use the numbers and english chars.length must 3 at least" />
+			<input type="text" name="name" id="name" placeholder="name" required="required" autofocus="autofocus" pattern="[a-zA-Z0-9]{3,8}" title="just use the numbers and english chars.length must 3 at least" />
 			<br>
 			<label for="family">family: </label>
 			<br>
-			<input type="text" name="family" id="family" required="required" pattern="[a-zA-Z0-9]{3,8}" title="just use the numbers and english chars.length must 3 at least" />
+			<input type="text" name="family" id="family" placeholder="family" required="required" pattern="[a-zA-Z0-9]{3,8}" title="just use the numbers and english chars.length must 3 at least" />
 			<br>
 			<label for="age">age: </label>
 			<br>
-			<input type="number" name="age" id="age" required="required" min="7" max="71" title="minimum age is seven and maximum is 71" />
+			<input type="number" name="age" id="age" placeholder="age" required="required" min="7" max="71" title="minimum age is seven and maximum is 71" />
 			<br>
 			<label for="telephone">telephone number: </label>
 			<br>
-			<input type="text" name="telephone" id="telephone" required="required" pattern="09[0-9]{9}" title="telephone number must start with 09(Iranina mobile)" />
+			<input type="text" name="telephone" id="telephone" placeholder="telephone" required="required" pattern="09[0-9]{9}" title="telephone number must start with 09(Iranina mobile)" />
 			<br>
 			<label for="password">password:</label>
 			<br>
-			<input type="password" name="password" id="password" required="required" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$" title="password must include numbers and chars" />
+			<input type="password" name="password" id="password" placeholder="password" required="required" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$" title="password must include numbers and chars" />
 			<br>
 			<input type="submit" value="register" />
 		</fieldset>

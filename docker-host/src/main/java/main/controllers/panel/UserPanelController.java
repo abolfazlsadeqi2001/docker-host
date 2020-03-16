@@ -28,7 +28,6 @@ public class UserPanelController {
 		}
 	}
 	
-	// TODO add money to database
 	// TODO write test for this
 	@RequestMapping(value="/charge", method = RequestMethod.POST)
 	public String charge (@RequestParam(name="telephone",required=true) String telephone,
