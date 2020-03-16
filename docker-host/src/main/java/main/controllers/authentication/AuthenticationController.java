@@ -25,7 +25,6 @@ import main.general.authentication.models.User;
 @Controller
 public class AuthenticationController {
 
-	// TODO check that each part of authentication system throw an exception by correct message
 	// TODO write test to that the div error container must be empty
 	@RequestMapping("/authentication")
 	public String authentication(Model model) {

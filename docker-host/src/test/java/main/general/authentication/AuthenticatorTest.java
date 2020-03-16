@@ -1,5 +1,7 @@
 package main.general.authentication;
 
+import static org.assertj.core.api.Assertions.fail;
+
 import java.sql.ResultSet;
 import java.time.LocalTime;
 
@@ -58,7 +60,9 @@ public class AuthenticatorTest {
 	@BeforeEach
 	public void before() {
 		try {
+			// clear cache memory
 			Authenticator.users.clear();
+			// clear database
 			for (String currentPhone : TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES) {
 				String deleteQueryTemplate = "DELETE FROM users WHERE telephone like %s";
 				String deleteQuery = String.format(deleteQueryTemplate, currentPhone);
@@ -108,7 +112,10 @@ public class AuthenticatorTest {
 		try {
 			Authenticator.validatePassword(validatedPassword);
 		} catch (Exception e) {
-			errorMessage = "doesn't allow a valid password!";
+			if(e.getMessage().contains("password"))
+				errorMessage = "doesn't allow a valid password!";
+			else
+				fail("the failure cause message doesn't include password which means that the user will confuse where is the problem");
 		}
 
 		// check the boolean value
@@ -139,7 +146,10 @@ public class AuthenticatorTest {
 		try {
 			Authenticator.validateTelephone(validatedPhone);
 		} catch (Exception e) {
-			errorMessage = "doesn't allow a validated phone number";
+			if (e.getMessage().contains("telephone"))
+				errorMessage = "doesn't allow a validated phone number";
+			else
+				fail("the failure cause message doesn't include telephone which meands that the user will confuse where is the problem");
 		}
 
 		// check the boolean value
@@ -162,14 +172,20 @@ public class AuthenticatorTest {
 		try {
 			Authenticator.validateAge(MINIMUM_REQUIRED_AGE - 1);
 		} catch (Exception e) {
-			example1DoCatch = true;
+			if(e.getMessage().contains("age"))
+				example1DoCatch = true;
+			else
+				fail("the failure cause message doesn't include the age which will may confuse the users about what is the problem");
 		}
 
 		boolean example2DoCatch = false;
 		try {
 			Authenticator.validateAge(MINIMUM_REQUIRED_AGE - 1);
 		} catch (Exception e) {
-			example2DoCatch = true;
+			if(e.getMessage().contains("age"))
+				example2DoCatch = true;
+			else
+				fail("the failure message doesn't have age which may confuse the user");
 		}
 
 		if (!example1DoCatch || !example2DoCatch) {
@@ -189,6 +205,9 @@ public class AuthenticatorTest {
 				Authenticator.validateName(nameObj.getName());
 				isntThrown = true;
 			} catch (Exception e) {
+				if(!e.getMessage().contains("name")) {
+					fail("thrown message doesn't contain name which may confuse the user when read the message");
+				}
 			}
 		}
 		if (isntThrown) {
@@ -208,6 +227,8 @@ public class AuthenticatorTest {
 				Authenticator.validateFamily(nameObj.getFamily());
 				isntThrown = true;
 			} catch (Exception e) {
+				if(e.getMessage().contains("family"))
+					fail("the exception message doesn't contain family it will so confusing for users");
 			}
 		}
 		if (isntThrown) {
