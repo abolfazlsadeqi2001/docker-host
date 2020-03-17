@@ -3,6 +3,7 @@ package authentication;
 import static org.junit.Assert.fail;
 
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.junit.After;
 import org.junit.Before;
@@ -88,6 +89,18 @@ public class Index extends SeleniumTestParent {
 		beforeEach();
 	}
 
+	/**
+	 * first time of opening /authentication we must have nothing for error
+	 * <br>
+	 * check for have a error-container as well
+	 */
+	@Test
+	public void testErrorContainerMustBeEmpty () {
+		String text = driver.findElement(By.cssSelector(".error-container")).getText().trim();
+		if(Pattern.matches("[a-zA-Z0-9]+",text))
+			fail("error container isn't empty");
+	}
+	
 	// login
 	@Test
 	public void testLoginForm() {
@@ -378,7 +391,6 @@ public class Index extends SeleniumTestParent {
 			throw new Exception("doesn't have correct value for telephone or password cookie");
 	}
 
-	// TODO update life time of cookies on login
 	@Ignore
 	@Test
 	public void testAddCookieOnIncorrectRegistrationFieldPattern() throws Exception {

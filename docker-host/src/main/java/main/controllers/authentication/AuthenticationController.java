@@ -12,7 +12,6 @@ import main.general.authentication.AuthenticatorFront;
 import main.general.authentication.models.User;
 
 /**
- * TODO write test for place holder
  * this class handle the login and register requests (just inputs from
  * /authentication)<br>
  * @author abolfazlsadeqi2001
