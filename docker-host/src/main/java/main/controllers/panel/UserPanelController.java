@@ -1,10 +1,10 @@
 package main.controllers.panel;
 
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import main.general.authentication.AuthenticatorFront;
@@ -29,7 +29,7 @@ public class UserPanelController {
 	}
 	
 	// TODO write test for this
-	@RequestMapping(value="/charge", method = RequestMethod.POST)
+	@RequestMapping(value="/charge")
 	public String charge (@RequestParam(name="telephone",required=true) String telephone,
 			@RequestParam(name="password",required=true) String password,
 			@RequestParam(name="cost",required=true)int cost,

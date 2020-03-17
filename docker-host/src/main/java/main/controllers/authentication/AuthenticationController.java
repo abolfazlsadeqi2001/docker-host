@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import main.general.authentication.AuthenticatorFront;
@@ -34,7 +33,7 @@ public class AuthenticationController {
 		return "/authentication";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login")
 	public String login(@RequestParam(defaultValue = "nothing", name = "telephone") String telephone,
 			@RequestParam(defaultValue = "nothing", name = "password") String password,
 			HttpServletResponse res,
@@ -59,7 +58,7 @@ public class AuthenticationController {
 		}
 	}
 	
-	@RequestMapping(value="/register",method = RequestMethod.POST)
+	@RequestMapping(value="/register")
 	public String register(@RequestParam(defaultValue = "nothing", name = "telephone") String telephone,
 			@RequestParam(defaultValue = "nothing", name = "password") String password,
 			@RequestParam(defaultValue = "nothing", name = "name") String name,
