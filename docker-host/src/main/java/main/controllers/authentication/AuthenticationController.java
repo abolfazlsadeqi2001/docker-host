@@ -24,7 +24,6 @@ public class AuthenticationController {
 	
 	private final int EXPIRE_TIME_PER_SECONDS = 3 * 24 * 60;
 	
-	// TODO write test to that the div error container must be empty
 	@RequestMapping("/authentication")
 	public String authentication(Model model) {
 		User user = new User();
