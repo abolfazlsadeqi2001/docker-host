@@ -37,7 +37,7 @@ public class Index extends SeleniumTestParent {
 			new Phone("0939753479", "your pattern does allow a nubmer which hasn't enogh characters"),
 			new Phone("093975347911", "your pattern allow a number which has a greator than length"),
 			new Phone("mamadzoro12", "your pattern allowed the chars for telephone") };
-	Phone[] validPhones = new Phone[] { new Phone("09397534791", "correct") };
+	Phone[] validPhones = new Phone[] { new Phone("09397534791", "correct"), new Phone("09397534790","correct") };
 	// password section
 	Password[] invalidPasswords = new Password[] { new Password("12341234", "pattern allowed only numberic password"),
 			new Password("mamad1", "pattern allowed small length"),
