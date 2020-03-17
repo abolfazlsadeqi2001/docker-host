@@ -7,6 +7,7 @@ import java.util.Set;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
@@ -37,7 +38,7 @@ public class Index extends SeleniumTestParent {
 			new Phone("0939753479", "your pattern does allow a nubmer which hasn't enogh characters"),
 			new Phone("093975347911", "your pattern allow a number which has a greator than length"),
 			new Phone("mamadzoro12", "your pattern allowed the chars for telephone") };
-	Phone[] validPhones = new Phone[] { new Phone("09397534791", "correct"), new Phone("09397534790","correct") };
+	Phone[] validPhones = new Phone[] { new Phone("09397534791", "correct"), new Phone("09397534790", "correct") };
 	// password section
 	Password[] invalidPasswords = new Password[] { new Password("12341234", "pattern allowed only numberic password"),
 			new Password("mamad1", "pattern allowed small length"),
@@ -97,13 +98,13 @@ public class Index extends SeleniumTestParent {
 	@Test
 	public void testTelephoneLoginInput() {
 		driver.findElement(By.cssSelector(
-				"form[name='login-form'] input[type='text'][name='telephone'][required='required'][pattern][title]:not([form])"));
+				"form[name='login-form'] input[type='text'][name='telephone'][required='required'][placeholder][pattern][title]:not([form])"));
 	}
 
 	@Test
 	public void testPasswordLoginInput() {
 		driver.findElement(By.cssSelector(
-				"form[name='login-form'] input[type='password'][name='password'][required='required'][pattern][title]:not([form])"));
+				"form[name='login-form'] input[type='password'][name='password'][required='required'][placeholder][pattern][title]:not([form])"));
 	}
 
 	@Test
@@ -112,6 +113,7 @@ public class Index extends SeleniumTestParent {
 				By.cssSelector("form[name='login-form'] input[type='submit'][value='login']:not([formaction])"));
 	}
 
+	@Ignore
 	@Test
 	public void testTelephoneLoginInputPattern() throws Exception {
 		WebElement telephone = driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']"));
@@ -128,6 +130,7 @@ public class Index extends SeleniumTestParent {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testPasswordLoginInputPattern() throws Exception {
 		WebElement password = driver.findElement(By.cssSelector("form[name='login-form'] [name='password']"));
@@ -144,6 +147,7 @@ public class Index extends SeleniumTestParent {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testAddCookieOnCorrectLogin() throws Exception {
 		String insertQueryTemplate = "INSERT INTO users(telephone,password,name,family,age) VALUES('%s','%s','%s','%s','%s')";
@@ -182,6 +186,7 @@ public class Index extends SeleniumTestParent {
 			fail("doesn't have correct value for telephone or password cookie");
 	}
 
+	@Ignore
 	@Test
 	public void testAddCookieOnIncorrectLogin() {
 		driver.findElement(By.cssSelector("form[name='login-form'] [name='telephone']"))
@@ -218,19 +223,31 @@ public class Index extends SeleniumTestParent {
 	@Test
 	public void testTelephoneRegisterInput() {
 		driver.findElement(By.cssSelector(
-				"form[name='register-form'] input[type='text'][name='telephone'][required='required'][pattern][title]:not([form])"));
+				"form[name='register-form'] input[type='text'][name='telephone'][required='required'][placeholder][pattern][title]:not([form])"));
 	}
 
 	@Test
 	public void testPasswordRegisterInput() {
 		driver.findElement(By.cssSelector(
-				"form[name='register-form'] input[type='password'][name='password'][required='required'][pattern][title]:not([form])"));
+				"form[name='register-form'] input[type='password'][name='password'][required='required'][placeholder][pattern][title]:not([form])"));
 	}
 
 	@Test
 	public void testNameRegisterInput() {
 		driver.findElement(By.cssSelector(
-				"form[name='register-form'] input[name='name'][type='text'][title][pattern][required='required']:not([form])"));
+				"form[name='register-form'] input[name='name'][type='text'][title][pattern][placeholder][required='required']:not([form])"));
+	}
+	
+	@Test
+	public void testFamilyRegisterInput() {
+		driver.findElement(By.cssSelector(
+				"form[name='register-form'] input[name='family'][type='text'][title][pattern][placeholder][required='required']:not([form])"));
+	}
+	
+	@Test
+	public void testAgeRegisterInput() {
+		driver.findElement(By.cssSelector(
+				"form[name='register-form'] input[name='age'][type='number'][min='7'][max='71'][placeholder][required='required']:not([form])"));
 	}
 
 	@Test
@@ -239,6 +256,7 @@ public class Index extends SeleniumTestParent {
 				By.cssSelector("form[name='register-form'] input[type='submit'][value='register']:not([formaction])"));
 	}
 
+	@Ignore
 	@Test
 	public void testNameRegisterInputPattern() throws Exception {
 		WebElement name = driver.findElement(By.cssSelector("form[name='register-form'] [name='name']"));
@@ -252,7 +270,8 @@ public class Index extends SeleniumTestParent {
 			fillInput(name, nameObject.getName(), "you have not to see a name error", nameObject.getMessage(), submit);
 		}
 	}
-	
+
+	@Ignore
 	@Test
 	public void testFamilyRegisterInputPattern() throws Exception {
 		WebElement family = driver.findElement(By.cssSelector("form[name='register-form'] [name='family']"));
@@ -268,6 +287,7 @@ public class Index extends SeleniumTestParent {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testAgeRegisterInputPattern() throws Exception {
 		WebElement age = driver.findElement(By.cssSelector("form[name='register-form'] [name='age']"));
@@ -278,10 +298,12 @@ public class Index extends SeleniumTestParent {
 		}
 		// valid ages
 		for (Age age2 : validAges) {
-			fillInput(age, String.valueOf(age2.getAge()), "you have not to see an age error", age2.getMessage(), submit);
+			fillInput(age, String.valueOf(age2.getAge()), "you have not to see an age error", age2.getMessage(),
+					submit);
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testTelephoneRegisterInputPattern() throws Exception {
 		WebElement telephone = driver.findElement(By.cssSelector("form[name='register-form'] [name='telephone']"));
@@ -300,8 +322,9 @@ public class Index extends SeleniumTestParent {
 		}
 	}
 
+	@Ignore
 	@Test
-	public void testPasswordRegisterPattern() throws Exception {
+	public void testPasswordRegisterInputPattern() throws Exception {
 		WebElement password = driver.findElement(By.cssSelector("form[name='register-form'] [name='password']"));
 		WebElement submit = driver.findElement(By.cssSelector("form[name='register-form'] input[type='submit']"));
 		// incorrect password
@@ -316,6 +339,7 @@ public class Index extends SeleniumTestParent {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testAddCookieOnCorrectRegistration() throws Exception {
 		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']"))
@@ -354,9 +378,10 @@ public class Index extends SeleniumTestParent {
 			throw new Exception("doesn't have correct value for telephone or password cookie");
 	}
 
-	// make two section one for invalid fields and invalid for such a phone number
+	// TODO update life time of cookies on login
+	@Ignore
 	@Test
-	public void testAddCookieOnIncorrectRegistrationField() throws Exception {
+	public void testAddCookieOnIncorrectRegistrationFieldPattern() throws Exception {
 		driver.findElement(By.cssSelector("form[name='register-form'] [name='name']"))
 				.sendKeys(invalidNames[0].getName());
 		driver.findElement(By.cssSelector("form[name='register-form'] [name='family']"))
@@ -387,8 +412,9 @@ public class Index extends SeleniumTestParent {
 			throw new Exception("have telephone or password cookie");
 	}
 
+	@Ignore
 	@Test
-	public void testAddCookieOnIncorrectRegistrationRepeatedTelephone() throws Exception {
+	public void testAddCookieOnIncorrectRegistrationTelephoneIsInUsed() throws Exception {
 		String insertQueryTemplate = "INSERT INTO users(telephone,password,name,family,age) VALUES('%s','%s','%s','%s','%s')";
 		String insertQuery = String.format(insertQueryTemplate, validPhones[0].getNumber(),
 				validPasswords[0].getPassword(), validNames[0].getName(), validFamilies[0].getFamily(),
