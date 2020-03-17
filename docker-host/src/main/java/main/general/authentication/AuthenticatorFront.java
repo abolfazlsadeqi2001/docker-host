@@ -80,6 +80,7 @@ public class AuthenticatorFront {
 		return user;
 	}
 	
+	// TODO implement a test that the user money if less than 0 throw an exception 
 	/**
 	 * update money value of a user
 	 * @param user the destination user to change money value
@@ -88,8 +89,11 @@ public class AuthenticatorFront {
 	 */
 	public static void changeMoney(User user,int costToChange) throws Exception {
 		try {
-			// set money on cache memory
 			int money = user.getMoney() + costToChange;
+			if (money < 0) {
+				throw new Exception("no enogh money!");
+			}
+			// set money on cache memory
 			Authenticator.getUserByTelephoneAndPasswordFromCache(user).setMoney(money);
 			// set money on database
 			Authenticator.updateMoney(user);
