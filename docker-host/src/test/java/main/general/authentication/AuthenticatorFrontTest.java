@@ -410,7 +410,6 @@ public class AuthenticatorFrontTest {
 	 * the saving into cache memory and database saving was written into
 	 * {@link main.general.authentication.models.UserTest}
 	 */
-	// TODO write test that when minus or add money happend the user money must equals that
 	@Test
 	public void testChangeMoney() throws Exception {
 		// define user

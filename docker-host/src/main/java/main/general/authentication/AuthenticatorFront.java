@@ -92,6 +92,8 @@ public class AuthenticatorFront {
 			if (money < 0) {
 				throw new Exception("no enogh money!");
 			}
+			// set current user money
+			user.setMoney(money);
 			// set money on cache memory
 			Authenticator.getUserByTelephoneAndPasswordFromCache(user).setMoney(money);
 			// set money on database

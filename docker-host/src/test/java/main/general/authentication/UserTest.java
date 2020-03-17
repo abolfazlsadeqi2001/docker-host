@@ -30,12 +30,12 @@ public class UserTest {
 			MysqlConnector.set(String.format(deleteQueryTemplete, phone));
 		}
 	}
-	
+
 	@AfterEach
 	public void afterEach() throws Exception {
 		beforeEach();
 	}
-	
+
 	/**
 	 * check both equals and equals by telephone and password methods
 	 * 
@@ -305,7 +305,8 @@ public class UserTest {
 		user.setMoney(moneies[0]);
 		// insert to database section
 		String insertQueryTemplete = "INSERT INTO users(telephone,password,name,family,age,money) VALUES('%s','%s','%s','%s','%d','%d')";
-		String insertQuery = String.format(insertQueryTemplete, user.getTelephone(),user.getPassword(),user.getName(),user.getFamily(),user.getAge(),user.getMoney());
+		String insertQuery = String.format(insertQueryTemplete, user.getTelephone(), user.getPassword(), user.getName(),
+				user.getFamily(), user.getAge(), user.getMoney());
 		MysqlConnector.set(insertQuery);
 		// attach to cache memory
 		Authenticator.attachToCache(user);
@@ -313,9 +314,14 @@ public class UserTest {
 		int moneyToAdd = 4000;
 		int finalResultOfMoney = user.getMoney() + moneyToAdd;
 		user.addMoney(-moneyToAdd);
+		// check for user money
+		boolean currentUserHaveASameValueForMoneyWithFinalResult = user.getMoney() == finalResultOfMoney;
+		if (!currentUserHaveASameValueForMoneyWithFinalResult)
+			fail("current user hasn't same value with final result");
 		// check into cache memory
-		boolean cacheHasASameValueWithFinalResult = Authenticator.getUserByTelephoneAndPasswordFromCache(user).getMoney() == finalResultOfMoney;
-		if(!cacheHasASameValueWithFinalResult)
+		boolean cacheHasASameValueWithFinalResult = Authenticator.getUserByTelephoneAndPasswordFromCache(user)
+				.getMoney() == finalResultOfMoney;
+		if (!cacheHasASameValueWithFinalResult)
 			fail("doesn't have a same value for final result and cache value");
 		// check into database
 		String selectQueryTemplete = "SELECT money FROM users WHERE telephone='%s'";
@@ -323,10 +329,10 @@ public class UserTest {
 		ResultSet set = MysqlConnector.get(selectQuery);
 		set.next();
 		boolean DataBaseHasASameValueWithFinalResult = set.getInt("money") == finalResultOfMoney;
-		if(!DataBaseHasASameValueWithFinalResult)
+		if (!DataBaseHasASameValueWithFinalResult)
 			throw new Exception("doesn't have a same value by database and final result");
 	}
-	
+
 	@Test
 	public void testAddMoneyForPositiveValue() throws Exception {
 		// define user section
@@ -339,7 +345,8 @@ public class UserTest {
 		user.setMoney(moneies[0]);
 		// insert to database section
 		String insertQueryTemplete = "INSERT INTO users(telephone,password,name,family,age,money) VALUES('%s','%s','%s','%s','%d','%d')";
-		String insertQuery = String.format(insertQueryTemplete, user.getTelephone(),user.getPassword(),user.getName(),user.getFamily(),user.getAge(),user.getMoney());
+		String insertQuery = String.format(insertQueryTemplete, user.getTelephone(), user.getPassword(), user.getName(),
+				user.getFamily(), user.getAge(), user.getMoney());
 		MysqlConnector.set(insertQuery);
 		// attach to cache memory
 		Authenticator.attachToCache(user);
@@ -347,9 +354,14 @@ public class UserTest {
 		int moneyToAdd = 4000;
 		int finalResultOfMoney = user.getMoney() + moneyToAdd;
 		user.addMoney(moneyToAdd);
+		// check for user money
+		boolean currentUserHaveASameValueForMoneyWithFinalResult = user.getMoney() == finalResultOfMoney;
+		if (!currentUserHaveASameValueForMoneyWithFinalResult)
+			fail("current user hasn't same value with final result");
 		// check into cache memory
-		boolean cacheHasASameValueWithFinalResult = Authenticator.getUserByTelephoneAndPasswordFromCache(user).getMoney() == finalResultOfMoney;
-		if(!cacheHasASameValueWithFinalResult)
+		boolean cacheHasASameValueWithFinalResult = Authenticator.getUserByTelephoneAndPasswordFromCache(user)
+				.getMoney() == finalResultOfMoney;
+		if (!cacheHasASameValueWithFinalResult)
 			fail("doesn't have a same value for final result and cache value");
 		// check into database
 		String selectQueryTemplete = "SELECT money FROM users WHERE telephone='%s'";
@@ -357,10 +369,10 @@ public class UserTest {
 		ResultSet set = MysqlConnector.get(selectQuery);
 		set.next();
 		boolean DataBaseHasASameValueWithFinalResult = set.getInt("money") == finalResultOfMoney;
-		if(!DataBaseHasASameValueWithFinalResult)
+		if (!DataBaseHasASameValueWithFinalResult)
 			throw new Exception("doesn't have a same value by database and final result");
 	}
-	
+
 	@Test
 	public void testMinusMoneyForPositiveValue() throws Exception {
 		// define user section
@@ -373,7 +385,8 @@ public class UserTest {
 		user.setMoney(moneies[0]);
 		// insert to database section
 		String insertQueryTemplete = "INSERT INTO users(telephone,password,name,family,age,money) VALUES('%s','%s','%s','%s','%d','%d')";
-		String insertQuery = String.format(insertQueryTemplete, user.getTelephone(),user.getPassword(),user.getName(),user.getFamily(),user.getAge(),user.getMoney());
+		String insertQuery = String.format(insertQueryTemplete, user.getTelephone(), user.getPassword(), user.getName(),
+				user.getFamily(), user.getAge(), user.getMoney());
 		MysqlConnector.set(insertQuery);
 		// attach to cache memory
 		Authenticator.attachToCache(user);
@@ -381,9 +394,14 @@ public class UserTest {
 		int moneyToMinus = 4000;
 		int finalResultOfMoney = user.getMoney() - moneyToMinus;
 		user.minusMoney(moneyToMinus);
+		// check for user money
+		boolean currentUserHaveASameValueForMoneyWithFinalResult = user.getMoney() == finalResultOfMoney;
+		if (!currentUserHaveASameValueForMoneyWithFinalResult)
+			fail("current user hasn't same value with final result");
 		// check into cache memory
-		boolean cacheHasASameValueWithFinalResult = Authenticator.getUserByTelephoneAndPasswordFromCache(user).getMoney() == finalResultOfMoney;
-		if(!cacheHasASameValueWithFinalResult)
+		boolean cacheHasASameValueWithFinalResult = Authenticator.getUserByTelephoneAndPasswordFromCache(user)
+				.getMoney() == finalResultOfMoney;
+		if (!cacheHasASameValueWithFinalResult)
 			fail("doesn't have a same value for final result and cache value");
 		// check into database
 		String selectQueryTemplete = "SELECT money FROM users WHERE telephone='%s'";
@@ -391,10 +409,10 @@ public class UserTest {
 		ResultSet set = MysqlConnector.get(selectQuery);
 		set.next();
 		boolean DataBaseHasASameValueWithFinalResult = set.getInt("money") == finalResultOfMoney;
-		if(!DataBaseHasASameValueWithFinalResult)
+		if (!DataBaseHasASameValueWithFinalResult)
 			throw new Exception("doesn't have a same value by database and final result");
 	}
-	
+
 	@Test
 	public void testMinusMoneyForNegativeValue() throws Exception {
 		// define user section
@@ -407,7 +425,8 @@ public class UserTest {
 		user.setMoney(moneies[0]);
 		// insert to database section
 		String insertQueryTemplete = "INSERT INTO users(telephone,password,name,family,age,money) VALUES('%s','%s','%s','%s','%d','%d')";
-		String insertQuery = String.format(insertQueryTemplete, user.getTelephone(),user.getPassword(),user.getName(),user.getFamily(),user.getAge(),user.getMoney());
+		String insertQuery = String.format(insertQueryTemplete, user.getTelephone(), user.getPassword(), user.getName(),
+				user.getFamily(), user.getAge(), user.getMoney());
 		MysqlConnector.set(insertQuery);
 		// attach to cache memory
 		Authenticator.attachToCache(user);
@@ -415,9 +434,14 @@ public class UserTest {
 		int moneyToMinus = 4000;
 		int finalResultOfMoney = user.getMoney() - moneyToMinus;
 		user.minusMoney(-moneyToMinus);
+		// check for user money
+		boolean currentUserHaveASameValueForMoneyWithFinalResult = user.getMoney() == finalResultOfMoney;
+		if (!currentUserHaveASameValueForMoneyWithFinalResult)
+			fail("current user hasn't same value with final result");
 		// check into cache memory
-		boolean cacheHasASameValueWithFinalResult = Authenticator.getUserByTelephoneAndPasswordFromCache(user).getMoney() == finalResultOfMoney;
-		if(!cacheHasASameValueWithFinalResult)
+		boolean cacheHasASameValueWithFinalResult = Authenticator.getUserByTelephoneAndPasswordFromCache(user)
+				.getMoney() == finalResultOfMoney;
+		if (!cacheHasASameValueWithFinalResult)
 			fail("doesn't have a same value for final result and cache value");
 		// check into database
 		String selectQueryTemplete = "SELECT money FROM users WHERE telephone='%s'";
@@ -425,8 +449,8 @@ public class UserTest {
 		ResultSet set = MysqlConnector.get(selectQuery);
 		set.next();
 		boolean DataBaseHasASameValueWithFinalResult = set.getInt("money") == finalResultOfMoney;
-		if(!DataBaseHasASameValueWithFinalResult)
+		if (!DataBaseHasASameValueWithFinalResult)
 			throw new Exception("doesn't have a same value by database and final result");
 	}
-	
+
 }
