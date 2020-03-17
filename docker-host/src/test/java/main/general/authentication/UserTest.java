@@ -94,7 +94,7 @@ public class UserTest {
 			throw new Exception("same users passwrod and telephone don't equal!");
 
 		if (user1.equals(user2))
-			throw new Exception("different ids equal!");
+			throw new Exception("different names equal!");
 
 		user1.setName(names[0]);
 		if (!user1.equals(user2))
@@ -125,7 +125,7 @@ public class UserTest {
 			throw new Exception("same users passwrod and telephone don't equal!");
 
 		if (user1.equals(user2))
-			throw new Exception("different ids equal!");
+			throw new Exception("different family equal!");
 
 		user1.setFamily(families[1]);
 		if (!user1.equals(user2))
@@ -156,7 +156,7 @@ public class UserTest {
 			throw new Exception("same users passwrod and telephone don't equal!");
 
 		if (user1.equals(user2))
-			throw new Exception("different ids equal!");
+			throw new Exception("different ages equal!");
 
 		user1.setAge(ages[1]);
 		if (!user1.equals(user2))
@@ -187,14 +187,13 @@ public class UserTest {
 			throw new Exception("same users passwrod and telephone don't equal!");
 
 		if (user1.equals(user2))
-			throw new Exception("different ids equal!");
+			throw new Exception("different moneies equal!");
 
 		user1.setMoney(moneies[1]);
 		if (!user1.equals(user2))
 			throw new Exception("same users don't equal");
 	}
 	
-	// TODO change different ids message
 	@Test
 	public void testEqualsForPassword() throws Exception {
 		User user1 = new User();
