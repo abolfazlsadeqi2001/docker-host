@@ -1,6 +1,6 @@
 package main.general.authentication.models;
 
-import main.general.authentication.Authenticator;
+import main.general.authentication.AuthenticatorFront;
 
 /**
  * each changes in this class must applied into
@@ -30,18 +30,27 @@ public class User {
 	}
 	
 	// TODO write test that the cache memory and database has a correct value
-	// placed it into Authenticator
+	/**
+	 * @param cost to add some money (don't sensitive on negative or positive)
+	 * @throws Exception
+	 */
 	public void addMoney(int cost) throws Exception {
-		money += cost;
-		try {
-			// set money on cache memory
-			User user = this;
-			Authenticator.getUserByTelephoneAndPasswordFromCache(user).setMoney(money);
-			// set money on database
-			Authenticator.updateMoney(user);
-		} catch (Exception e) {
-			throw new Exception("unknown user!I can't add money because of "+e.getMessage());
-		}
+		if(cost >= 0)
+			AuthenticatorFront.changeMoney(this, cost);
+		else 
+			AuthenticatorFront.changeMoney(this, -cost);
+	}
+	
+	// TODO write test to work so good by negative and positive values
+	/**
+	 * @param cost to minus some money (don't sensitive on negative or positive)
+	 * @throws Exception
+	 */
+	public void minusMoney(int cost) throws Exception {
+		if(cost < 0)
+			AuthenticatorFront.changeMoney(this, cost);
+		else 
+			AuthenticatorFront.changeMoney(this, -cost);
 	}
 	
 	public int getMoney() {

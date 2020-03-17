@@ -79,4 +79,22 @@ public class AuthenticatorFront {
 		set.close();
 		return user;
 	}
+	
+	/**
+	 * update money value of a user
+	 * @param user the destination user to change money value
+	 * @param costToChange how much do you want to change <b>sensitive to negative and positive values</b>
+	 * @throws Exception an exception will be thrown if there is a problem with change money process
+	 */
+	public static void changeMoney(User user,int costToChange) throws Exception {
+		try {
+			// set money on cache memory
+			int money = user.getMoney() + costToChange;
+			Authenticator.getUserByTelephoneAndPasswordFromCache(user).setMoney(money);
+			// set money on database
+			Authenticator.updateMoney(user);
+		} catch (Exception e) {
+			throw new Exception("unknown user!I can't add money because of "+e.getMessage());
+		}
+	}
 }
