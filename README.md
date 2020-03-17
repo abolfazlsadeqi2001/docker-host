@@ -19,7 +19,8 @@ This folder include .sh files for test by command line apps like curl (which giv
 ## TODO
 - [x] Implements authentication system
 - [x] Implements cachable memory for autherization (0.041s performance foreach request)
-- [X] Implements more fields on register like name and family and repassword
+- [x] Implements more fields on register like name and family and repassword
+- [ ] Implements chain of responsibility for internal server errors
 - [ ] Implements user panel
 - [ ] Implements a css framework
 - [ ] Implements send code using Kavenegar to mobile for confirm and forget password
