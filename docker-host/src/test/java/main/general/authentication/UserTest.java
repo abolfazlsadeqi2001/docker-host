@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.fail;
 
 import java.sql.ResultSet;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import main.general.authentication.models.User;
@@ -20,6 +22,20 @@ public class UserTest {
 
 	int[] moneies = new int[] { 4000, 2000 };
 
+	@BeforeEach
+	public void beforeEach() throws Exception {
+		Authenticator.users.clear();
+		String deleteQueryTemplete = "DELETE FROM users WHERE telephone='%s'";
+		for (String phone : phones) {
+			MysqlConnector.set(String.format(deleteQueryTemplete, phone));
+		}
+	}
+	
+	@AfterEach
+	public void afterEach() throws Exception {
+		beforeEach();
+	}
+	
 	/**
 	 * check both equals and equals by telephone and password methods
 	 * 
@@ -306,9 +322,9 @@ public class UserTest {
 		// check into database
 		String selectQueryTemplete = "SELECT money FROM users WHERE telephone='%s'";
 		String selectQuery = String.format(selectQueryTemplete, phones[0]);
-		ResultSet set =  MysqlConnector.get(selectQuery);
+		ResultSet set = MysqlConnector.get(selectQuery);
 		set.next();
-		boolean DataBaseHasASameValueWithFinalResult = set.getInt("money") != finalResultOfMoney;
+		boolean DataBaseHasASameValueWithFinalResult = set.getInt("money") == finalResultOfMoney;
 		if(!DataBaseHasASameValueWithFinalResult)
 			throw new Exception("doesn't have a same value by database and final result");
 	}
