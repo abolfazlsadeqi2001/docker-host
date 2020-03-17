@@ -382,12 +382,11 @@ public class AuthenticatorTest {
 			throw new Exception("the expire time is less than " + minimumExpireTime);
 		}
 		// check up the maximum validate hour and minutes
-		if (Authenticator.MAXIMUM_VALIDATE_HOUR != MAXIMUM_VALIDATE_HOUR) {
-			throw new Exception("problem with Maximum validate hour");
-		}
-
-		if (Authenticator.MAXIMUM_VALIDATE_MINUTES != MAXIMUM_VALIDATE_MINUTES) {
-			throw new Exception("problem with Maximum validate minutes");
+		boolean isValidMaximumValidatedTimeUntit = Authenticator.MAXIMUM_VALIDATE_HOUR != MAXIMUM_VALIDATE_HOUR &&
+				Authenticator.MAXIMUM_VALIDATE_MINUTES != MAXIMUM_VALIDATE_MINUTES;	
+		
+		if (!isValidMaximumValidatedTimeUntit) {
+			throw new Exception("problem with Maximum validated units");
 		}
 		// check for make an expire time in 23:59 (it mustn't throw an exception)
 		JOptionPane.showMessageDialog(null, "make your system time to 23:59 \n"
