@@ -29,7 +29,6 @@ public class User {
 		name = "";
 	}
 	
-	// TODO write test that the cache memory and database has a correct value
 	/**
 	 * @param cost to add some money (don't sensitive on negative or positive)
 	 * @throws Exception
@@ -41,7 +40,6 @@ public class User {
 			AuthenticatorFront.changeMoney(this, -cost);
 	}
 	
-	// TODO write test to work so good by negative and positive values
 	/**
 	 * @param cost to minus some money (don't sensitive on negative or positive)
 	 * @throws Exception
