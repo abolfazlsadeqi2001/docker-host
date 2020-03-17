@@ -79,8 +79,7 @@ public class AuthenticatorFront {
 		set.close();
 		return user;
 	}
-	
-	// TODO implement a test that the user money if less than 0 throw an exception 
+	 
 	/**
 	 * update money value of a user
 	 * @param user the destination user to change money value

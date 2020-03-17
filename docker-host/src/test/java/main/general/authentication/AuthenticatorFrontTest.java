@@ -20,7 +20,7 @@ import main.general.database.mysql.MysqlConnector;
  * @author abolfazlsadeqi2001
  */
 public class AuthenticatorFrontTest {
-	// id 
+	// id
 	private int defaultIdValue = 4;
 	// money
 	private int defaultMoneyValue = 4000;
@@ -129,31 +129,32 @@ public class AuthenticatorFrontTest {
 	@Test
 	public void testLoginToGetAnUserWithoutAnyCache() throws Exception {
 		String insertTemplete = "INSERT INTO users(id,telephone,password,name,family,age,money) values('%d','%s','%s','%s','%s','%d','%d')";
-		String query = String.format(insertTemplete, defaultIdValue, validPhones[0].getNumber(), validPasswords[0].getPassword(),
-				validNames[0].getName(), validFamilies[0].getFamily(), validAges[0].getAge(),defaultMoneyValue);
+		String query = String.format(insertTemplete, defaultIdValue, validPhones[0].getNumber(),
+				validPasswords[0].getPassword(), validNames[0].getName(), validFamilies[0].getFamily(),
+				validAges[0].getAge(), defaultMoneyValue);
 		MysqlConnector.set(query);
 
 		User user = AuthenticatorFront.login(validPhones[0].getNumber(), validPasswords[0].getPassword());
 		if (user == null) {
 			throw new Exception("a null reference thrown");
 		}
-		
-		if(user.getId() != defaultIdValue) {
+
+		if (user.getId() != defaultIdValue) {
 			fail("generated id by myself doesn't equals to gotten id");
 		}
-		
+
 		if (!user.getTelephone().equals(validPhones[0].getNumber())) {
 			throw new Exception("telephone must not be empty");
 		}
-		
+
 		if (!user.getPassword().equals(validPasswords[0].getPassword())) {
 			throw new Exception("password must not be empty");
 		}
-		
+
 		if (!user.getName().equals(validNames[0].getName())) {
 			throw new Exception("name must not be empty");
 		}
-		
+
 		if (!user.getFamily().equals(validFamilies[0].getFamily())) {
 			throw new Exception("family must not be empty");
 		}
@@ -161,11 +162,11 @@ public class AuthenticatorFrontTest {
 		if (user.getAge() != validAges[0].getAge()) {
 			throw new Exception("age must not be zero");
 		}
-		
+
 		if (user.getMoney() != defaultMoneyValue) {
 			fail("money doesn't equals to saved money");
 		}
-		
+
 		if (!user.getExceptionMessage().equals("")) {
 			fail("fail because user has excepiton message");
 		}
@@ -180,11 +181,12 @@ public class AuthenticatorFrontTest {
 		user.setFamily(validFamilies[0].getFamily());
 		user.setTelephone(validPhones[0].getNumber());
 		user.setPassword(validPasswords[0].getPassword());
+		user.setId(defaultIdValue);
 		user.setMoney(defaultMoneyValue);
 
 		String insertTemplete = "INSERT INTO users(id,telephone,password,name,family,age,money) values('%d','%s','%s','%s','%s','%d','%d')";
-		String query = String.format(insertTemplete, defaultIdValue, user.getTelephone(), user.getPassword(), user.getName(),
-				user.getFamily(), user.getAge(),defaultMoneyValue);
+		String query = String.format(insertTemplete, user.getId(), user.getTelephone(), user.getPassword(),
+				user.getName(), user.getFamily(), user.getAge(), defaultMoneyValue);
 		MysqlConnector.set(query);
 
 		User gottenUser = AuthenticatorFront.login(validPhones[0].getNumber(), validPasswords[0].getPassword());
@@ -402,4 +404,45 @@ public class AuthenticatorFrontTest {
 		}
 	}
 
+	/**
+	 * this method test that a situation of money will less than 0 must throw
+	 * exception otherwise not<br>
+	 * the saving into cache memory and database saving was written into
+	 * {@link main.general.authentication.models.UserTest}
+	 */
+	// TODO write test that when minus or add money happend the user money must equals that
+	@Test
+	public void testChangeMoney() throws Exception {
+		// define user
+		User user = new User();
+		user.setTelephone(validPhones[0].getNumber());
+		user.setPassword(validPasswords[0].getPassword());
+		user.setName(validNames[0].getName());
+		user.setFamily(validFamilies[0].getFamily());
+		user.setAge(validAges[0].getAge());
+		user.setMoney(defaultMoneyValue);
+		// attach to cache
+		Authenticator.attachToCache(user);
+		// attach to database
+		String insertQueryTemplate = "INSERT INTO users(telephone,password,name,family,age,money) VALUES('%s','%s','%s','%s','%d','%d')";
+		String insertQuery = String.format(insertQueryTemplate, user.getTelephone(), user.getPassword(), user.getName(),
+				user.getFamily(), user.getAge(), user.getMoney());
+		MysqlConnector.set(insertQuery);
+		// minus a value less than user money which must won't throw any exception
+		user.minusMoney(defaultMoneyValue/2);
+		// minus all user have (money = 0 must not have any exception)
+		user.minusMoney(defaultMoneyValue/2);
+		// minus some money that will make user money less than 0
+		boolean isHasMoneyException = false;
+		try {
+			user.minusMoney(1);
+		} catch (Exception e) {
+			if(e.getMessage().contains("money"))
+				isHasMoneyException = true;
+		}
+		
+		if (!isHasMoneyException) {
+			fail("didn't throw any exception when user money < 0");
+		}
+	}
 }
