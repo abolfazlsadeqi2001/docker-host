@@ -277,7 +277,6 @@ public class Authenticator {
 		MysqlConnector.set(query);
 	}
 	
-	// TODO write test
 	/**
 	 * get an user object use it phone to update the money by its money
 	 * @param user

@@ -227,7 +227,8 @@ public class AuthenticatorTest {
 				Authenticator.validateFamily(nameObj.getFamily());
 				isntThrown = true;
 			} catch (Exception e) {
-				if(e.getMessage().contains("family"))
+				System.out.println(e.getMessage());
+				if(!e.getMessage().contains("family"))
 					fail("the exception message doesn't contain family it will so confusing for users");
 			}
 		}
@@ -382,10 +383,10 @@ public class AuthenticatorTest {
 			throw new Exception("the expire time is less than " + minimumExpireTime);
 		}
 		// check up the maximum validate hour and minutes
-		boolean isValidMaximumValidatedTimeUntit = Authenticator.MAXIMUM_VALIDATE_HOUR != MAXIMUM_VALIDATE_HOUR &&
+		boolean isValidMaximumValidatedTimeUntit = Authenticator.MAXIMUM_VALIDATE_HOUR != MAXIMUM_VALIDATE_HOUR ||
 				Authenticator.MAXIMUM_VALIDATE_MINUTES != MAXIMUM_VALIDATE_MINUTES;	
 		
-		if (!isValidMaximumValidatedTimeUntit) {
+		if (isValidMaximumValidatedTimeUntit) {
 			throw new Exception("problem with Maximum validated units");
 		}
 		// check for make an expire time in 23:59 (it mustn't throw an exception)
@@ -477,5 +478,32 @@ public class AuthenticatorTest {
 		if (size != 0) {
 			throw new Exception("size must be 0");
 		}
+	}
+	
+	@Test
+	public void testUpdateMoney() throws Exception {
+		// make user
+		User user = new User();
+		user.setTelephone(TEST_PHONE_NUBMERS_USED_IN_DATABASE_TEST_CASES[0]);
+		user.setPassword(validatedPassword);
+		user.setName(validatedNames[0].getName());
+		user.setFamily(validatedFamilies[0].getFamily());
+		user.setAge(MINIMUM_REQUIRED_AGE+1);
+		user.setMoney(1000);
+		// insert
+		String insertQueryTemplate = "INSERT INTO users(telephone,password,name,family,age) VALUES('%s','%s','%s','%s','%d')";
+		String insertQuery = String.format(insertQueryTemplate, user.getTelephone(), user.getPassword(), user.getName(), user.getFamily(), user.getAge());
+		MysqlConnector.set(insertQuery);
+		// update from authenticator
+		user.setMoney(4000);
+		Authenticator.updateMoney(user);
+		// check up from database
+		String selectQueryTemplete = "SELECT * FROM users WHERE telephone='%s'";
+		String selectQuery = String.format(selectQueryTemplete,user.getTelephone());
+		ResultSet set = MysqlConnector.get(selectQuery);
+		set.next();
+		boolean isEqualTo4000 = set.getInt("money") == 4000;
+		if(!isEqualTo4000)
+			fail("doesn't equal to 4000");
 	}
 }
