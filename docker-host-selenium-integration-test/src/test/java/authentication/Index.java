@@ -24,7 +24,7 @@ import general.SeleniumTestParent;
 
 /**
  * @author abolfazlsadeqi2001
- * @version 1.2.1
+ * @version 1.3.1
  * @see {@link general.SeleniumTestParent}
  */
 public class Index extends SeleniumTestParent {
