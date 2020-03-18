@@ -67,7 +67,7 @@ public class AuthenticatorFront {
 		user.setName(Authenticator.validateName(name));
 		// check that the telephone number doesn't exists
 		if (Authenticator.isExistsTelephoneNumberInDatabase(user)) {
-			throw new Exception("anoher user use a same phone number");
+			throw new Exception("another user use a same phone number");
 		}
 		// insert to database
 		Authenticator.insertNewUser(user);
