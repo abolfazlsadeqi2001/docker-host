@@ -13,8 +13,6 @@ It is very flexible so you can change the server IP very easy,It means you can r
 ### docker-host-client
 This is the main project.As the services will be a lot also a server cannot handle the memory and cpu for deploying website and hosting docker services I decided to make a client which get request from main server (docker-host) then make a docker service after that inform user about port and ip (on docker-host panel page).
 You can have many docker-host-client on different servers but you cannot have more docker-host nubmer than 1 (just one host for deploy website)
-### shell-based-test
-This folder include .sh files for test by command line apps like curl (which give you some information about what will must happen after run this shell script and if it not where is the code might have wrong)
 
 ## TODO
 - [x] Implements authentication system
