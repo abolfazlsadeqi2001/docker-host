@@ -154,18 +154,8 @@ public class Authenticator {
 	 * @return expireTime
 	 */
 	static LocalTime getExpireTime() {
-		int currentHour = LocalTime.now().getHour();
-		int expireMinutes = LocalTime.now().getMinute() + MINUTES_TO_REMOVE_FROM_CACHE;
-
-		if (expireMinutes > MAXIMUM_VALIDATE_MINUTES) {
-			expireMinutes = 0;
-			currentHour += 1;
-			if (currentHour > MAXIMUM_VALIDATE_HOUR) {
-				currentHour = 0;
-			}
-		}
-
-		LocalTime expireTime = LocalTime.of(currentHour, expireMinutes);
+		LocalTime now = LocalTime.now();
+		LocalTime expireTime = now.plusMinutes(MINUTES_TO_REMOVE_FROM_CACHE);
 
 		return expireTime;
 	}
